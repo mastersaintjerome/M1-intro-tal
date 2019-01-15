@@ -23,7 +23,6 @@ public class Tokenize {
 			tokenizer = new Tokenize(args[0]);
 		}else {
 			tokenizer = new Tokenize();
-
 		}
 		
 		tokenizer.construitArbrePrefix();
@@ -49,33 +48,38 @@ public class Tokenize {
 			}
 			else {
 				if(current.hadFilsDroit()) {
-					tmp = current.getFilsDroit();
-					if(tmp != null) {
-						if(tmp.getChar() == calu) {
-							if(code != -1)
-								tmp.setCode(code);
-							current = tmp;
-						}
-					}
-					tmp = null;
-				}else{
-					if(current.hadFilsGauche()) {
-						
-						while (current.hadFilsGauche() && current.getFilsGauche().getChar() != calu) {
-							current = current.getFilsGauche();	
-						}
-						 
-						if(! current.hadFilsGauche()) {
-							//Si aucun fils gauche
-							current.setFilsGauche(new Noeud(calu, code));
-						}else {
-							//Possede un fils gauche et calu est son caractere
-							if(code != -1) {
-								current.getFilsGauche().setCode(code);
+					if(current.getFilsDroit().getChar() == calu) {
+						if(code != -1)
+							current.getFilsDroit().setCode(code);
+						current = current.getFilsDroit();
+					}else {
+						if(current.hadFilsGauche()) {
+							
+							while (current.hadFilsGauche() && current.getFilsGauche().getChar() != calu) {
+								current = current.getFilsGauche();	
+							}
+							 
+							if(current.hadFilsGauche()) {
+								//Possede un fils gauche et calu est son caractere
+								if(code != -1) {
+									current.getFilsGauche().setCode(code);
+									current = current.getFilsGauche();
+								}
+							}else {
+								//Si aucun fils gauche
+								current.setFilsGauche(new Noeud(calu, code));
 								current = current.getFilsGauche();
 							}
+						}else {
+							current.setFilsGauche(new Noeud(calu, code));
+							current = current.getFilsGauche();
 						}
 					}
+					
+				}else{
+					current.setFilsDroit(new Noeud(calu, code));
+					current = current.getFilsDroit();
+
 				}
 				
 				if(this.rd.isEndOfLine()) {
@@ -84,10 +88,33 @@ public class Tokenize {
 					System.out.println("Fin de ligne");
 				}
 			}
+		}	
+	}
+	
+	public int searchWordCode(String word) {
+		current = root;
+		char c;
+		int code = -1;
+		while(word.length() > 0) {
+			c = word.charAt(0);
+			if(current != null) {
+				code = current.getCode();
+				if(this.current.getChar() == c){
+					current = this.current.getFilsDroit();
+				}else{
+					current = this.current.getFilsGauche();
+				}
+				word = word.substring(1);
+			}
 		}
-		
-		
-		
+		current = root;
+		return code;
+	}
+	
+	public String tokenizeFile(String FilePath) {
+		rd = new Reader(FilePath);
+
+		return null;
 	}
 
 }

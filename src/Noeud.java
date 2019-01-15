@@ -9,6 +9,8 @@ public class Noeud {
 	public Noeud(char cour, int code) {
 		this.caractereCourrant = cour;
 		this.code = code;
+		this.filsDroit = null;
+		this.filsGauche = null;
 	}
 	
 	public void setFilsGauche(Noeud fg) {
@@ -40,11 +42,11 @@ public class Noeud {
 	}
 	
 	public boolean hadFilsDroit() {
-		return filsDroit == null;
+		return filsDroit != null;
 	}
 	
 	public boolean hadFilsGauche() {
-		return filsGauche == null;
+		return filsGauche != null;
 	}
 	
 }
