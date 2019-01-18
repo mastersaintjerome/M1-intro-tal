@@ -14,21 +14,6 @@ public class Tokenize {
 		this.rd = new Reader(file);
 	}
 	
-	public static void main(String[] args) {
-
-		Tokenize tokenizer;
-
-		if(args.length == 1) {
-			System.out.println(args[0]);
-			tokenizer = new Tokenize(args[0]);
-		}else {
-			tokenizer = new Tokenize();
-		}
-		
-		tokenizer.construitArbrePrefix();
-		
-	}
-	
 	public void construitArbrePrefix() {
 		
 		Noeud tmp;
@@ -40,7 +25,7 @@ public class Tokenize {
 			}
 			
 			char calu = this.rd.getCalu();
-			System.out.println(calu);
+			//System.out.println(calu);
 			
 			if(root == null) {
 				root = new Noeud(calu, code);
@@ -85,7 +70,7 @@ public class Tokenize {
 				if(this.rd.isEndOfLine()) {
 					current = root;
 					code = -1;
-					System.out.println("Fin de ligne");
+					//System.out.println("Fin de ligne");
 				}
 			}
 		}	
@@ -127,6 +112,11 @@ public class Tokenize {
 		return code;
 	}
 	
+	public void tokenizeInput() {
+		String line = rd.readEntry();
+		System.out.println(tokenizeStr(line));
+	}
+	
     public String tokenizeStr(String str) {        
         StringBuilder strTokenized = new StringBuilder(50);
         String[] parts = str.split(" ");
@@ -159,5 +149,21 @@ public class Tokenize {
         }
         return strTokenized.toString();
     }
+    
+	public static void main(String[] args) {
+
+		Tokenize tokenizer;
+
+		if(args.length == 1) {
+			System.out.println(args[0]);
+			tokenizer = new Tokenize(args[0]);
+		}else {
+			tokenizer = new Tokenize();
+		}
+		
+		tokenizer.construitArbrePrefix();
+		tokenizer.tokenizeInput();
+		
+	}
 
 }

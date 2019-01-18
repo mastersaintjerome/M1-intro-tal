@@ -59,6 +59,11 @@ public class Reader {
 		return true;
 	}
 	
+	public String readEntry() {
+		Scanner scanner = new Scanner(System.in);
+		return scanner.nextLine();
+	}
+	
 	public int getCodeMot() {
 		return codeMot;
 	}
