@@ -112,11 +112,16 @@ public class Tokenize {
 					current = this.current.getFilsGauche();
 				}
 				word = word.substring(1);
-			}
-			
-			if(word.length() <= 0) {
+				
+				if(word.length() <= 0) {
+					isFind = true;
+				}
+			}else {
+				System.out.println("Current = null");
 				isFind = true;
 			}
+			
+			
 		}
 		current = root;
 		return code;
