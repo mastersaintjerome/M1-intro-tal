@@ -16,62 +16,15 @@ public class Tokenize {
 	
 	public void construitArbrePrefix() {
 		
-		Noeud tmp;
-		
-		while(this.rd.readChar()) {
-			
-			if(this.rd.isEndOfLine()) {
-				code = this.rd.getCodeMot();
-			}
-			
-			char calu = this.rd.getCalu();
-			//System.out.println(calu);
-			
-			if(root == null) {
-				root = new Noeud(calu, code);
-				current = root;
-			}
-			else {
-				if(current.hadFilsDroit()) {
-					if(current.getFilsDroit().getChar() == calu) {
-						if(code != -1)
-							current.getFilsDroit().setCode(code);
-						current = current.getFilsDroit();
-					}else {
-						if(current.hadFilsGauche()) {
-							
-							while (current.hadFilsGauche() && current.getFilsGauche().getChar() != calu) {
-								current = current.getFilsGauche();	
-							}
-							 
-							if(current.hadFilsGauche()) {
-								//Possede un fils gauche et calu est son caractere
-								if(code != -1) {
-									current.getFilsGauche().setCode(code);
-									current = current.getFilsGauche();
-								}
-							}else {
-								//Si aucun fils gauche
-								current.setFilsGauche(new Noeud(calu, code));
-								current = current.getFilsGauche();
-							}
-						}else {
-							current.setFilsGauche(new Noeud(calu, code));
-							current = current.getFilsGauche();
-						}
-					}
-					
-				}else{
-					current.setFilsDroit(new Noeud(calu, code));
-					current = current.getFilsDroit();
-
-				}
+		while(rd.hasNextLine()) {
+			rd.readLine();
+			code = rd.getCodeMot();
+			String word = rd.getWord();
+			if( ! word.isEmpty() ){
+				if( root == null )
+					root = new Noeud(word.charAt(0), -1);
 				
-				if(this.rd.isEndOfLine()) {
-					current = root;
-					code = -1;
-					//System.out.println("Fin de ligne");
-				}
+				root.addWord(code, word, 0);
 			}
 		}	
 	}
@@ -117,7 +70,7 @@ public class Tokenize {
 		System.out.println(tokenizeStr(line));
 	}
 	
-    public String tokenizeStr(String str) {        
+	public String tokenizeStr(String str) {        
         StringBuilder strTokenized = new StringBuilder(50);
         String[] parts = str.split(" ");
         int partsLength = parts.length;
@@ -125,11 +78,12 @@ public class Tokenize {
         int i = 0;
         while (i < partsLength) { 
             temp = searchWordCode(parts[i]);
+            System.out.println("temp = "+ temp);
             if(temp > 0){
                 int j = i;
                 String tempStr = parts[j];
                 int tempLast = temp;
-                while((temp != 0) && (j < partsLength)){
+                while((temp != 0) && (j+1 < partsLength)){
                     temp = tempLast;
                     j++;
                     tempStr += "_" + parts[j];
@@ -149,6 +103,10 @@ public class Tokenize {
         }
         return strTokenized.toString();
     }
+	
+	public void afficheArbre() {
+		System.out.println(root.toString());
+	}
     
 	public static void main(String[] args) {
 
@@ -162,6 +120,7 @@ public class Tokenize {
 		}
 		
 		tokenizer.construitArbrePrefix();
+		//tokenizer.afficheArbre();
 		tokenizer.tokenizeInput();
 		
 	}

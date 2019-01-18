@@ -4,12 +4,10 @@ import java.util.Scanner;
 
 public class Reader {
 
-	private char calu;
 	private int codeMot;
-	private boolean finLigne = true;
 	private String line;
 	private Scanner sc;
-	private int cursor = 0;
+	private Scanner entry = new Scanner(System.in);
 	
 	public Reader() {
 		sc = new Scanner(System.in);
@@ -37,42 +35,23 @@ public class Reader {
 			codeMot = -1;
 			line = "";
 		}
-		finLigne = false;
-		cursor = 0;
+		
 	}
-
-	public boolean readChar() {
-
-		if (finLigne)
-			readLine();
-
-		if( ! line.isEmpty()) {
-			calu = line.charAt(cursor);
-			
-			if(cursor == line.length() -1 ) {
-				finLigne = true;
-			}
-			cursor++;
-		}else {
-			return false;
-		}
-		return true;
+	
+	public boolean hasNextLine() {
+		return sc.hasNextLine();
 	}
 	
 	public String readEntry() {
-		Scanner scanner = new Scanner(System.in);
-		return scanner.nextLine();
+		return entry.nextLine();
 	}
 	
 	public int getCodeMot() {
 		return codeMot;
 	}
 	
-	public char getCalu() {
-		return calu;
+	public String getWord() {
+		return line;
 	}
-	
-	public boolean isEndOfLine(){
-		return finLigne;
-	}
+
 }
