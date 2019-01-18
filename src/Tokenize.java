@@ -30,40 +30,41 @@ public class Tokenize {
 	}
 	
 	public int searchWordCode(String word) {
-		current = root;
-		char c = 0;
-		boolean needNewChar = true;
-		boolean isFind = false;
-		int code = -1;
-
-		while(! isFind) {
-			if(needNewChar) {
-				c = word.charAt(0);
-				needNewChar = false;
-			}
-			if(current != null) {
-				code = current.getCode();
-				if(this.current.getChar() == c){
-					current = this.current.getFilsDroit();
-					needNewChar = true;
-				}else{
-					current = this.current.getFilsGauche();
-				}
-				word = word.substring(1);
-				
-				if(word.length() <= 0) {
-					isFind = true;
-				}
-			}else {
-				System.out.println("Current = null");
-				isFind = true;
-			}
-			
-			
-		}
-		current = root;
-		return code;
-	}
+        current = root;
+        char c = 0;
+        boolean needNewChar = true;
+        boolean isFind = false;
+        int code = 0;
+        while(! isFind) {
+            if(needNewChar) {
+                c = word.charAt(0);
+                needNewChar = false;
+            }
+            if(current != null) {
+                code = current.getCode();
+                System.out.println("Char = " + Character.toString(c) + " Temp = " + code + " Real char = " + current.getChar());
+                if(current.getChar() == c){
+                    current = this.current.getFilsDroit();
+                    needNewChar = true;
+                    if(word.length() == 0){
+                    	isFind = true;
+                    	needNewChar = false;
+                    }else{
+                    	word = word.substring(1);
+                    	System.out.println(word);
+                    }
+                }else{
+                    current = this.current.getFilsGauche();
+                    System.out.println("word = " + word + "char = " + current.getChar());
+                }    
+            }else{
+                System.out.println("Current = null");
+                isFind = true;
+            }
+        }
+        current = root;
+        return code;
+    }
 	
 	public void tokenizeInput() {
 		String line = rd.readEntry();
@@ -121,7 +122,10 @@ public class Tokenize {
 		
 		tokenizer.construitArbrePrefix();
 		//tokenizer.afficheArbre();
-		tokenizer.tokenizeInput();
+        
+		System.out.println("cher = " + tokenizer.searchWordCode("cher"));
+        //tokenizer.tokenizeInput();
+		
 		
 	}
 
