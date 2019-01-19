@@ -50,18 +50,22 @@ public class Noeud {
 	}
 	
 	public String toString(int tab) {
+		
         StringBuilder string = new StringBuilder();
         StringBuilder tabs = new StringBuilder();
+        
         for (int i = 0; i < tab; i++)
             tabs.append("\t");
 
         string.append(tabs.toString() + "- (" + getChar() + " " + getCode() + ": ");
-        if (hadFilsDroit()) {
+        
+        if ( hadFilsDroit() ) {
             string.append("\n" + getFilsDroit().toString(tab + 1));
         } else {
             string.append("\n" + tabs.toString() + "\t- NULL");
         }
-        if (hadFilsGauche()) {
+        
+        if ( hadFilsGauche( )) {
             string.append("\n" + getFilsGauche().toString(tab + 1));
         } else {
             string.append("\n" + tabs.toString() + "\t- NULL");
@@ -78,26 +82,26 @@ public class Noeud {
     
     public void addWord(int code, String word, int index) {
     	//Si le caractere du noeud est celui chercher
-    	if(getChar() == word.charAt(index)) {
+    	if( getChar() == word.charAt(index) ) {
     		//Si le caractere se trouve a la fin du mot
     		if(index == word.length() - 1) {
     			//On modifie le code
-    			setCode(code);
+    			setCode( code );
     		}else {
     			//Sinon on vas a droite
-    			if(! hadFilsDroit()) {
+    			if( ! hadFilsDroit() ) {
     				//Si ne possede pas de fils droit, on le creer
-    				setFilsDroit(new Noeud(word.charAt(index + 1) , -1));
+    				setFilsDroit(new Noeud( word.charAt(index + 1) , -1));
     			}
 				getFilsDroit().addWord(code, word, index + 1);
 
     		}
     	}else {
     		//On doit chercher à gauche
-    		if( ! hadFilsGauche()) {
-    			setFilsGauche(new Noeud(word.charAt(index), -1));
+    		if( ! hadFilsGauche() ) {
+    			setFilsGauche( new Noeud( word.charAt(index), code) );
     		}
-    		getFilsGauche().addWord(code, word, index);
+    		getFilsGauche().addWord( code, word, index );
     	}
     }
 	

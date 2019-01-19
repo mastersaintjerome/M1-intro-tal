@@ -15,10 +15,10 @@ public class Compteur {
 	
 	public void readLine() {
 		String line = sc.nextLine();
-		if( ! line.isEmpty()) {
+		if( ! line.isEmpty() ) {
 			String[] parsedLine = line.split(" ");
 			
-			for(String code : parsedLine) {
+			for( String code : parsedLine ) {
 				
 				int key = Integer.parseInt(code);
 				
@@ -35,14 +35,14 @@ public class Compteur {
 		Map<Integer, Integer> treeMap = new TreeMap<>(
                 (Comparator<Integer>) (o1, o2) -> o1.compareTo(o2)
         );
-		treeMap.putAll(map);
+		treeMap.putAll( map );
 		map = treeMap;
 	}
 	
 	public void printMap() {
 		System.out.println("La map contient les éléments suivants: ");
-		for(int key : map.keySet()) {
-			System.out.println("    " + key + " " + map.get(key));
+		for( int key : map.keySet() ) {
+			System.out.println("    " + key + " " + map.get(key) );
 		}
 	}
 	

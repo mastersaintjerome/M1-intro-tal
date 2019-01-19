@@ -14,6 +14,7 @@ public class Reader {
 	}
 	
 	public Reader(String filename) {
+		
 		File file = new  File(filename);
 		
 		try {
