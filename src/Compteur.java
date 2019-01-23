@@ -1,59 +1,72 @@
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.TreeMap;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 
-public class Compteur {
-
-	private Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+final public class Compteur {
+	private OneGram oneGram = new OneGram();
+	private BiGramList biGrams = new BiGramList();
 	private Scanner sc = new Scanner(System.in);
+	private String line;
+	
+	public Compteur(){
+		
+	}
+	
+	public Compteur(String line){
+		this.line = line;
+	}
+	
+	public void oneGram(){
+		oneGram.createOneGram(line);
+		oneGram.sortMap();
+	}
+	
+	public BiGramList getBiGrams(){
+		return biGrams;
+	}
+	
+	public OneGram getOneGram(){
+		return oneGram;
+	}
+	
+	public void biGram(){
+		biGrams.createBiGram(line);
+	}
 	
 	public boolean hasNextLine() {
 		return sc.hasNextLine();
 	}
 	
 	public void readLine() {
-		String line = sc.nextLine();
-		if( ! line.isEmpty() ) {
-			String[] parsedLine = line.split(" ");
-			
-			for( String code : parsedLine ) {
-				
-				int key = Integer.parseInt(code);
-				
-				if( map.containsKey(key) ) {
-					map.put(key, map.get(key) + 1);
-				}else {
-					map.put(key, 1);
-				}
-			}
-		}
+		line = sc.nextLine();
 	}
 	
-	public void sortMap() {
-		Map<Integer, Integer> treeMap = new TreeMap<>(
-                (Comparator<Integer>) (o1, o2) -> o1.compareTo(o2)
-        );
-		treeMap.putAll( map );
-		map = treeMap;
-	}
-	
-	public void printMap() {
-		System.out.println("La map contient les éléments suivants: ");
-		for( int key : map.keySet() ) {
-			System.out.println("    " + key + " " + map.get(key) );
-		}
+	public void toFile(){
+		oneGram.onegramToFile();
+		biGrams.bigramToFile();
 	}
 	
 	public static void main(String[] args) {
-		
-		Compteur comp = new Compteur();
-		
-		comp.readLine();
-		comp.sortMap();
-		comp.printMap();
-		
+		Compteur comp;	
+		if(args.length >= 1) {
+			System.out.println(args[0]);
+			comp = new Compteur(args[0]);
+		}else {
+			comp = new Compteur();
+			comp.readLine();
+		}
+		comp.oneGram();
+		comp.biGram();
+		comp.getOneGram().printMap();
+		comp.getBiGrams().printBiGram();
+		comp.toFile();
 	}
-	
 }
+

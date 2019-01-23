@@ -2,7 +2,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-public class Reader {
+final public class Reader {
 
 	private int codeMot;
 	private String line;

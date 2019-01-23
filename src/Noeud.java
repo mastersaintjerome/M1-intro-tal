@@ -1,5 +1,5 @@
 
-public class Noeud {
+final public class Noeud {
 
 	private char caractereCourrant;
 	private int code;
