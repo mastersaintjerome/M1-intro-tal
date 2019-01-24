@@ -9,11 +9,19 @@ final public class Reader {
 	private Scanner sc;
 	private Scanner entry = new Scanner(System.in);
 	
-	public Reader() {
+	public Reader() 
+	/*
+	 * Lis l'entrée standard si un fichier n'est pas spécifier.
+	 */
+	{
 		sc = new Scanner(System.in);
 	}
 	
-	public Reader(String filename) {
+	public Reader(String filename) 
+	/*
+	 * Lis un fichier entré en paramettre.
+	 */
+	{
 		
 		File file = new  File(filename);
 		
@@ -25,13 +33,19 @@ final public class Reader {
 	
 	}
 
-	public void readLine() {
+	public void readLine() 
+	/*
+	 * Prépare la prochaine ligne à traiter si elle existe, en séparant le code et la chaine. 
+	 */
+	{
 		
 		if(sc.hasNextLine()) {
+			
 			codeMot = sc.nextInt();
 			line = sc.nextLine();
 			line = line.substring(1);
 			line = line.replaceAll(" ", "_");
+			
 		}else {
 			codeMot = -1;
 			line = "";

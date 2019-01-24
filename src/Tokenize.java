@@ -14,7 +14,11 @@ final public class Tokenize {
 		this.rd = new Reader(file);
 	}
 	
-	public void construitArbrePrefix() {
+	public void construitArbrePrefix() 
+	/*
+	 * Construit l'arbre préfix depuis le Reader.
+	 */
+	{
 		
 		while(rd.hasNextLine()) {
 			rd.readLine();
@@ -29,92 +33,136 @@ final public class Tokenize {
 		}	
 	}
 	
-	public int searchWordCode(String word) {
-        current = root;
+	public int searchWordCode(String word) 
+	/*
+	 * return : le code du mot passé en paramettre.
+	 */
+	{
         char c = 0;
         boolean needNewChar = true;
         boolean isFind = false;
         int code = 0;
+        
+        current = root;
+        
         while ( ! isFind || word.length() < 1) {
+        	
             if ( needNewChar ) {
                 c = word.charAt(0);
                 needNewChar = false;
             }
             
             if ( current != null ) {
+            	
                 code = current.getCode();
+                
                 if ( current.getChar() == c ) {
+                	
                     current = this.current.getFilsDroit();
-                    needNewChar = true;                    
+                    needNewChar = true;      
+                    
                     if ( word.length()  <= 1 ) {
+                    	
                         isFind = true;
                         needNewChar = false;
                     } else {
+                    	
                         word = word.substring(1);
                     }
                 } else {
+                	
                     current = this.current.getFilsGauche();
                 }
+                
             } else {
+            	
                 isFind = true;
                 code = 0;
             }
         }
+        
         current = root;
-        if( ! isFind )
-            code = 0;
+        
+        if( ! isFind )	
+        	code = 0;
+        
         return code;
     }
 	
-	public void tokenizeInput() {
+	public void tokenizeInput() 
+	/*
+	 * Tokenise une ligne depuis l'entrée standard.
+	 */
+	{
         String line = rd.readEntry();
         System.out.println(tokenizeStr(line));
     }
 
-	 public String prepareTokenizeStr(String str){
+	 public String prepareTokenizeStr(String str)
+	 /*
+	  * return : renvoie la ligne à tokeniser traitée, afin de la rendre traitable plus facilement.
+	  */
+	 {
 	        str = str.replaceAll("[,:;.!?-]", " $0").replace("'","' ").trim();
 	        return str;
 	 }
     
-    public String tokenizeStr(String str) {
-    	
+    public String tokenizeStr(String str) 
+    /*
+     * Tokenise une chaine de mot en une chaine d'entiers correspondants.
+     */
+    {
         StringBuilder strTokenized = new StringBuilder(50);
-        str = prepareTokenizeStr(str);
         String[] parts = str.split(" ");
         int partsLength = parts.length;
         int temp;
         int i = 0;
+  
+        str = prepareTokenizeStr(str);
+        
         while (i < partsLength) {
             temp = searchWordCode(parts[i]);
+            
             if (temp > 0) {
                 int j = i;
                 String tempStr = parts[j];
                 int tempLast = temp;
+                
                 while ((tempLast != 0) && (j + 1 < partsLength)) {
                     j++;
                     tempStr += "_" + parts[j];
                     tempLast = searchWordCode(tempStr);
+                    
                     if( tempLast != 0 ){
                         temp = tempLast;
                         i = j;
                     }
                 }
+                
                 strTokenized.append(temp);
                 strTokenized.append(" ");
                 i++;
+                
             } else {
+            	
                 while ( (temp <= 0) && (i < partsLength) ){
                     temp = searchWordCode( parts[i] );
                     i++;
                 }
+                
                 strTokenized.append(0);
                 strTokenized.append(" ");
             }
         }
+        
         return strTokenized.toString();
     }
 	
-	public void afficheArbre() {
+	public void afficheArbre() 
+	/*
+	 * Affiche l'arbre préfix.
+	 */
+	{
 		System.out.println( root.toString() );
 	}
     
@@ -132,7 +180,6 @@ final public class Tokenize {
 		tokenizer.construitArbrePrefix();
 		//tokenizer.afficheArbre();
         tokenizer.tokenizeInput();
-		
 		
 	}
 

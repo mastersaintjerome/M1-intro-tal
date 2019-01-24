@@ -49,7 +49,11 @@ final public class Noeud {
 		return filsGauche != null;
 	}
 	
-	public String toString(int tab) {
+	public String toString(int tab) 
+	/*
+	 * Affiche proprement la branche courrante de l'arbre.
+	 */
+	{
 		
         StringBuilder string = new StringBuilder();
         StringBuilder tabs = new StringBuilder();
@@ -80,7 +84,11 @@ final public class Noeud {
         return toString(0);
     }
     
-    public void addWord(int code, String word, int index) {
+    public void addWord(int code, String word, int index) 
+    /*
+     * Ajoute un mot dans l'arbre.
+     */
+    {
     	//Si le caractere du noeud est celui chercher
     	if( getChar() == word.charAt(index) ) {
     		//Si le caractere se trouve a la fin du mot
