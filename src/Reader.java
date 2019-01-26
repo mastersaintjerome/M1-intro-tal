@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 final public class Reader {
 
-	private int codeMot;
+	private int wordCode;
 	private String line;
 	private Scanner sc;
 	private Scanner entry = new Scanner(System.in);
@@ -41,13 +41,13 @@ final public class Reader {
 		
 		if(sc.hasNextLine()) {
 			
-			codeMot = sc.nextInt();
+			wordCode = sc.nextInt();
 			line = sc.nextLine();
 			line = line.substring(1);
 			line = line.replaceAll(" ", "_");
 			
 		}else {
-			codeMot = -1;
+			wordCode = -1;
 			line = "";
 		}
 		
@@ -61,8 +61,8 @@ final public class Reader {
 		return entry.nextLine();
 	}
 	
-	public int getCodeMot() {
-		return codeMot;
+	public int getWordCode() {
+		return wordCode;
 	}
 	
 	public String getWord() {

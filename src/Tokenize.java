@@ -1,8 +1,7 @@
-
 final public class Tokenize {
 		
-	private Noeud root = null;
-	private Noeud current = root;
+	private Node root = null;
+	private Node current = root;
 	private int code = -1;
 	private Reader rd = null;
 	
@@ -14,7 +13,7 @@ final public class Tokenize {
 		this.rd = new Reader(file);
 	}
 	
-	public void construitArbrePrefix() 
+	public void buildTree() 
 	/*
 	 * Construit l'arbre préfix depuis le Reader.
 	 */
@@ -22,11 +21,13 @@ final public class Tokenize {
 		
 		while(rd.hasNextLine()) {
 			rd.readLine();
-			code = rd.getCodeMot();
+			code = rd.getWordCode();
 			String word = rd.getWord();
+			
 			if( ! word.isEmpty() ){
+				
 				if( root == null )
-					root = new Noeud(word.charAt(0), -1);
+					root = new Node(word.charAt(0), -1);
 				
 				root.addWord(code, word, 0);
 			}
@@ -58,7 +59,7 @@ final public class Tokenize {
                 
                 if ( current.getChar() == c ) {
                 	
-                    current = this.current.getFilsDroit();
+                    current = this.current.getRightChild();
                     needNewChar = true;      
                     
                     if ( word.length()  <= 1 ) {
@@ -71,7 +72,7 @@ final public class Tokenize {
                     }
                 } else {
                 	
-                    current = this.current.getFilsGauche();
+                    current = this.current.getLeftChild();
                 }
                 
             } else {
@@ -98,7 +99,7 @@ final public class Tokenize {
         System.out.println(tokenizeStr(line));
     }
 
-	 public String prepareTokenizeStr(String str)
+	 public String prepareTokenizeString(String str)
 	 /*
 	  * return : renvoie la ligne à tokeniser traitée, afin de la rendre traitable plus facilement.
 	  */
@@ -118,7 +119,7 @@ final public class Tokenize {
         int temp;
         int i = 0;
   
-        str = prepareTokenizeStr(str);
+        str = prepareTokenizeString(str);
         
         while (i < partsLength) {
             temp = searchWordCode(parts[i]);
@@ -158,7 +159,7 @@ final public class Tokenize {
         return strTokenized.toString();
     }
 	
-	public void afficheArbre() 
+	public void printTree() 
 	/*
 	 * Affiche l'arbre préfix.
 	 */
@@ -177,8 +178,8 @@ final public class Tokenize {
 			tokenizer = new Tokenize();
 		}
 		
-		tokenizer.construitArbrePrefix();
-		//tokenizer.afficheArbre();
+		tokenizer.buildTree();
+		//tokenizer.printTree();
         tokenizer.tokenizeInput();
 		
 	}

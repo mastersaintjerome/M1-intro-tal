@@ -27,7 +27,7 @@ final public class BiGramList {
 			while(i < parsedLineLength){
 				
 				String current = parsedLine[i];
-				System.out.println(current);
+				//System.out.println(current);
 				BiGram biGram;
 				
 				if(i == 0){
@@ -39,8 +39,10 @@ final public class BiGramList {
 				int index = biGrams.indexOf(biGram);
 				
 				if(index != -1){
+					
 					biGrams.get(index).increment();
 				}else{
+					
 					biGrams.add(biGram);
 				}
 				

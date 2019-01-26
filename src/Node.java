@@ -1,24 +1,24 @@
 
-final public class Noeud {
+final public class Node {
 
-	private char caractereCourrant;
+	private char currentChar;
 	private int code;
-	private Noeud filsGauche = null;
-	private Noeud filsDroit = null;
+	private Node leftChild = null;
+	private Node rightChild = null;
 	
-	public Noeud(char cour, int code) {
-		this.caractereCourrant = cour;
+	public Node(char cour, int code) {
+		this.currentChar = cour;
 		this.code = code;
-		this.filsDroit = null;
-		this.filsGauche = null;
+		this.leftChild = null;
+		this.rightChild = null;
 	}
 	
-	public void setFilsGauche(Noeud fg) {
-		this.filsGauche = fg;
+	public void setLeftChild(Node fg) {
+		this.leftChild = fg;
 	}
 	
-	public void setFilsDroit(Noeud fd) {
-		this.filsDroit = fd;
+	public void setRightChild(Node fd) {
+		this.rightChild = fd;
 	}
 	
 	public void setCode(int code) {
@@ -30,23 +30,23 @@ final public class Noeud {
 	}
 	
 	public char getChar() {
-		return this.caractereCourrant;
+		return this.currentChar;
 	}
 	
-	public Noeud getFilsDroit() {
-		return filsDroit;
+	public Node getRightChild() {
+		return rightChild;
 	}
 	
-	public Noeud getFilsGauche() {
-		return filsGauche;
+	public Node getLeftChild() {
+		return leftChild;
 	}
 	
-	public boolean hadFilsDroit() {
-		return filsDroit != null;
+	public boolean hadRightChild() {
+		return getRightChild() != null;
 	}
 	
-	public boolean hadFilsGauche() {
-		return filsGauche != null;
+	public boolean hadLeftChild() {
+		return getLeftChild() != null;
 	}
 	
 	public String toString(int tab) 
@@ -63,14 +63,14 @@ final public class Noeud {
 
         string.append(tabs.toString() + "- (" + getChar() + " " + getCode() + ": ");
         
-        if ( hadFilsDroit() ) {
-            string.append("\n" + getFilsDroit().toString(tab + 1));
+        if ( hadRightChild() ) {
+            string.append("\n" + getRightChild().toString(tab + 1));
         } else {
             string.append("\n" + tabs.toString() + "\t- NULL");
         }
         
-        if ( hadFilsGauche( )) {
-            string.append("\n" + getFilsGauche().toString(tab + 1));
+        if ( hadLeftChild( )) {
+            string.append("\n" + getLeftChild().toString(tab + 1));
         } else {
             string.append("\n" + tabs.toString() + "\t- NULL");
         }
@@ -91,25 +91,32 @@ final public class Noeud {
     {
     	//Si le caractere du noeud est celui chercher
     	if( getChar() == word.charAt(index) ) {
+    		
     		//Si le caractere se trouve a la fin du mot
     		if(index == word.length() - 1) {
+    			
     			//On modifie le code
     			setCode( code );
     		}else {
+    			
     			//Sinon on vas a droite
-    			if( ! hadFilsDroit() ) {
+    			if( ! hadRightChild() ) {
+    				
     				//Si ne possede pas de fils droit, on le creer
-    				setFilsDroit(new Noeud( word.charAt(index + 1) , -1));
+    				setRightChild(new Node( word.charAt(index + 1) , -1));
     			}
-				getFilsDroit().addWord(code, word, index + 1);
+    			
+    			getRightChild().addWord(code, word, index + 1);
 
     		}
     	}else {
+    		
     		//On doit chercher à gauche
-    		if( ! hadFilsGauche() ) {
-    			setFilsGauche( new Noeud( word.charAt(index), code) );
+    		if( ! hadLeftChild() ) {
+    			
+        		setLeftChild( new Node( word.charAt(index), code) );
     		}
-    		getFilsGauche().addWord( code, word, index );
+    		getLeftChild().addWord( code, word, index );
     	}
     }
 	

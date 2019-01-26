@@ -1,17 +1,17 @@
 import java.util.Scanner;
 
-final public class Compteur {
+final public class Counter {
 	
 	private OneGram oneGram = new OneGram();
 	private BiGramList biGrams = new BiGramList();
 	private Scanner sc = new Scanner(System.in);
 	private String line;
 	
-	public Compteur(){
+	public Counter(){
 		
 	}
 	
-	public Compteur(String line)
+	public Counter(String line)
 	/*
 	 * Crée un compteur avec une ligne a lire 
 	 */
@@ -75,13 +75,13 @@ final public class Compteur {
 	
 	public static void main(String[] args) {
 		
-		Compteur comp;	
+		Counter comp;	
 		
 		if(args.length >= 1) {
 			System.out.println(args[0]);
-			comp = new Compteur(args[0]);
+			comp = new Counter(args[0]);
 		}else {
-			comp = new Compteur();
+			comp = new Counter();
 			comp.readLine();
 		}
 		

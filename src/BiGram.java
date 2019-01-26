@@ -34,11 +34,12 @@ final public class BiGram {
 	@Override
     public boolean equals(Object obj)
 	/*
-	 * return : Renvoie vrai si 2 bigrams sont égaux, faux sinon.
+	 * return : Renvoie vrai si les 2 bigrams sont égaux, faux sinon.
 	 */
 	{
         if(obj instanceof BiGram){
             BiGram other = (BiGram) obj;
+            
 			if(this.previous == other.previous){
 				if(this.current == other.current){
 					return true;
