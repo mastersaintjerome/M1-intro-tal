@@ -96,7 +96,7 @@ final public class Tokenize {
 	 */
 	{
         String line = rd.readEntry();
-        System.out.println(tokenizeStr(line));
+        System.out.println(tokenizeString(line));
     }
 
 	 public String prepareTokenizeString(String str)
@@ -108,7 +108,7 @@ final public class Tokenize {
 	        return str;
 	 }
     
-    public String tokenizeStr(String str) 
+    public String tokenizeString(String str) 
     /*
      * Tokenise une chaine de mot en une chaine d'entiers correspondants.
      */

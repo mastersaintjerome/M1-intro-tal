@@ -125,6 +125,19 @@ final public class BiGramList {
             }      
 	}
 	
+	public int getNumberOf(int prev, int curr) {
+		
+		BiGram biGram = new BiGram(prev, curr, 1);
+		
+		int index = biGrams.indexOf(biGram);
+		
+		if(index != -1){
+			return biGrams.get(index).getNomber();
+		}
+		
+		return -1;
+	}
+	
     public int getN()
     /*
      * return : Nombre de mots total de la map. 

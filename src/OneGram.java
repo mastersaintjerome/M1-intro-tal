@@ -140,5 +140,6 @@ final public class OneGram {
     {
     	return this.map.get(key);
     }
+
 }
 
