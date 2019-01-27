@@ -11,47 +11,87 @@ final public class Perplexity {
         
     }
     
-    public OneGram getOneGram() {
+    public OneGram getOneGram(){
         return oneGram;
     }
 
-    public int getOneGramN() {
+    public int getOneGramN()
+    /*
+     * Return : Renvois le nombre des occurences des mots du 1-gram lu.
+     */
+    {
     	return oneGram.getN();
     }
     
-    public int getOneGramV() {
+    public int getOneGramV() 
+    /*
+     * Return : Renvois le nombre de mots différents du 1-gram lu. 
+     */
+    {
     	return oneGram.getV();
     }
     
-    public BiGramList getBiGramList() {
+    public BiGramList getBiGramList() 
+    /*
+     * Return : Renvois la liste des bi-grams lus.
+     */
+    {
         return biGramList;
     }
 
-    public int getBiGramN() {
+    public int getBiGramN()
+    /*
+     * Return : Renvois le nombre de bi-grams lus.
+     */
+    {
     	return biGramList.getN();
     }
     
-    public int getBiGramV() {
+    public int getBiGramV() 
+    /*
+     * Return : Renvois le nombres de bi-grams différents lus.
+     */
+    {
     	return biGramList.getV();
     }
     
-    public int C(int key) {
+    public int C(int key) 
+    /*
+     * Return : Renvois le nombre d'occurences du mot key.
+     */
+    {
     	return oneGram.getNumberOf(key);
     }
     
-    public int C(int key1, int key2) {
+    public int C(int key1, int key2) 
+    /*
+     * Return : Renvois le nombre d'occurences du bugram composé des 2 clés.
+     */
+    {
     	return biGramList.getNumberOf(key1, key2);
     }
     
-    public float P(int Wi) {
+    public float P(int Wi)
+    /*
+     * Return : Calcul et renvois la probabilitée d'un 1-gram donné.
+     */
+    {
     	return (float) ( ( C(Wi) + alpha ) / ( oneGram.getN() + ( oneGram.getV() * alpha ) ) );
     }
 
-    public float P(int Wi, int Wj) {
+    public float P(int Wi, int Wj) 
+    /*
+     * Return : Calcul et renvois la probabilitée d'un bigram donné.
+     */
+    {
     	return (float) ( ( C(Wi, Wj) + alpha ) / ( oneGram.getNumberOf(Wi) + ( biGramList.getV() * alpha ) ) );
     }
     
-    public float logP(int[] T) {
+    public float logP(int[] T) 
+    /*
+     * Return : Calcul et renvoie la somme des logarithme de toutes les probabilitées des mots en entrée.
+     */
+    {
     	int k = T.length;
     	
     	float result = (float) Math.log( P(0, T[0]) );
@@ -63,7 +103,11 @@ final public class Perplexity {
     	return result;
     }
     
-    public float LP(String T) {
+    public float LP(String T)
+    /*
+     * Return : Calcul et renvoie le logprob moyen de la chaîne de mots en entrée.
+     */
+    {
     	String[] parsedT = T.split(" ");
     	int k = parsedT.length;
     	int[] convertedT = new int[parsedT.length];
@@ -76,14 +120,20 @@ final public class Perplexity {
     	return (float) ((float) - (1/k) * logP(convertedT));
     }
     
-    public float PP(String T) {
-    	return (float) Math.pow(2, LP(T) );
+    public float PP(String T) 
+    /*
+     * Return : Calcul et renvoie la perplexitée de la liste de mots en entrée.
+     */
+    {
+    	return (float) Math.pow(2, LP(T));
     }
     
     public static void main(String[] args) {
         Perplexity perplexity = new Perplexity();
         perplexity.getOneGram().printMap();
         perplexity.getBiGramList().printBiGram();
+        
+        
     }
 
 }
