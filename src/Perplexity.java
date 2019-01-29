@@ -1,7 +1,14 @@
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.Set;
 
 final public class Perplexity {
 	
     final static public double alpha = 0.01;
+    private Map<Integer, Float> probOneGram = new HashMap<Integer, Float>();
+    private Map<BiGram, Float> probBiGram = new HashMap<BiGram, Float>();
+
     final private OneGram oneGram = new OneGram();
     final private BiGramList biGramList = new BiGramList();
 
@@ -128,10 +135,50 @@ final public class Perplexity {
     	return (float) Math.pow(2, LP(T));
     }
     
+    public void calculOneGramProbability() 
+    /*
+     * Calcul la probabilitée de chaque 1-gram et la stoque dans une Map.
+     */
+    {
+    	Set<Integer> keys = getOneGram().getMapKeys();
+    	
+    	for(int key: keys) {
+    		probOneGram.put(key, P(key));
+    	}
+    	
+    }
+    
+    public void calculBiGramProbability() 
+    /*
+     * Calcul la probabilitée de chaque 1-gram et la stoque dans une Map.
+     */
+    {
+    	/*
+    	
+    	keys;
+    	getBiGramList().getMapKeys();
+    	
+    	for(int key: keys) {
+    		//probBiGram.put(key, P(key));
+    	}
+    	
+    	*/
+    }
+    
     public static void main(String[] args) {
+    	
         Perplexity perplexity = new Perplexity();
+        
         perplexity.getOneGram().printMap();
         perplexity.getBiGramList().printBiGram();
+        
+        perplexity.calculOneGramProbability();
+        perplexity.calculBiGramProbability();
+        
+        Scanner sc = new Scanner(System.in);
+        String line = sc.nextLine();
+        
+        
         
         
     }

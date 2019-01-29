@@ -3,6 +3,7 @@ import java.io.FileWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.util.Set;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -123,6 +124,14 @@ final public class OneGram {
 			result += entry.getValue();
 		}
 		return result;
+	}
+	
+	public Set<Integer> getMapKeys()
+	/*
+	 * Return : renvois les clés contenus dans la map (les 1-grams). 
+	 */
+	{
+		return map.keySet();
 	}
         
     public int getV()

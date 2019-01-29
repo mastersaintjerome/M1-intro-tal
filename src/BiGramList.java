@@ -17,7 +17,6 @@ final public class BiGramList {
 	 * Crée un bi-gram et l'ajoute à la liste.
 	 */
 	{
-		
 		if( ! line.isEmpty() ) {
 			
 			String[] parsedLine = line.split(" ");
@@ -123,6 +122,10 @@ final public class BiGramList {
                 String[] parts = line.split(" ",3);
                 biGrams.add(new BiGram(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]),Integer.parseInt(parts[2])));
             }      
+	}
+	
+	public void getMapKeys() {
+		
 	}
 	
 	public int getNumberOf(int prev, int curr) {
