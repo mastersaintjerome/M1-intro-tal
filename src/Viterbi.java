@@ -102,7 +102,7 @@ public class Viterbi {
     	return perplexity.P(0, W);
     }
     
-      /*
+    /*
      *  Return : Calcul et renvoie la probabilité d’émission d’avoir le mot W à la position i dans le treillis.
      */ 
     public double LPE(int W, int index) {
@@ -121,7 +121,6 @@ public class Viterbi {
     */
     public double argmin(int i, int j, int N) {
     	double min = 0;
-    	
     	for(int k = 1; k < perplexity.getBiGramN(); k++) {
 	
     	} 	
@@ -157,7 +156,6 @@ public class Viterbi {
     	
     	for( i = 2; i < T; i++) {	
             N = treillis.get(i).size();
-    		
             for(j = 1; j < N; j++) {
                 //min = argmin{de k=1 a N} alpha[i-1,k] + perplexity.LP(w[i,j]|w[i-1,k]) + LPE(w[i,j],i);
                 //alpha[i][j] = alpha[i-1][min] + perplexity.LP(w(i-1, min), w(i,j)) + LPE(w(i,j),i);
