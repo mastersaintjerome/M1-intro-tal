@@ -4,9 +4,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 import javafx.util.Pair;
 
@@ -21,14 +19,8 @@ import javafx.util.Pair;
  * @author Gaëtan
  */
 public class Viterbi {
-
     private final String treillisFileName;//"exemple_treillis.txt"
     private List<List<Pair<Integer,Double>>> treillis; 
-    
-	private Perplexity perplexity = new Perplexity();
-	private double[][] alpha;
-	private double[][] beta;
-	
     
     public Viterbi(String treillisFileName){
         this.treillisFileName = treillisFileName;
@@ -42,7 +34,7 @@ public class Viterbi {
             File text = new File(treillisFileName);
             Scanner scnr = null;
             try{
-            	scnr = new Scanner(text);
+                    scnr = new Scanner(text);
 
             }catch(FileNotFoundException fi){
                     fi.printStackTrace();
@@ -56,7 +48,7 @@ public class Viterbi {
             if("%col".equals(parts[0])){
                 int col = Integer.parseInt(parts[1]);
                 if(col != currentCol){
-                    Collections.sort(words, Comparator.comparing(p -> -p.getValue()));
+                    Collections.sort(words, Comparator.comparing(p -> +p.getValue()));
                     treillis.add(words);
                     words = new ArrayList<>();
                     currentCol = col;
@@ -72,7 +64,7 @@ public class Viterbi {
     }
     
     public void showTreillis(){
-        int i = 0;
+        int i =0;
         for(List<Pair<Integer,Double>> items : treillis){
             System.out.println("%col " + i);
             for(Pair<Integer,Double> pair : items) {
@@ -82,6 +74,16 @@ public class Viterbi {
             }
             i++;
         }
+    }
+    
+    public void showBestSentence(){
+        String str = "";
+        for(List<Pair<Integer,Double>> items : treillis){
+            Integer key = items.get(0).getKey();
+            str += key + " ";
+        }
+        System.out.println(str);
+        
     }
     
     public double LP0(int W) 
@@ -160,5 +162,6 @@ public class Viterbi {
         Viterbi viterbi = new Viterbi("exemple_treillis.txt");
         viterbi.initFromFile();
         viterbi.showTreillis();
+        viterbi.showBestSentence();
     }
 }
