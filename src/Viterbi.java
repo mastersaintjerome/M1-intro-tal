@@ -58,4 +58,17 @@ public class Viterbi {
             treillis.add(words);
         }
     }
+    
+    public void showTreillis(){
+        int i =0;
+        for(Map<Integer,Double> items : treillis){
+            System.out.println("%col " + i);
+            for(Map.Entry<Integer, Double> entry : items.entrySet()) {
+                Integer key = entry.getKey();
+                Double value = entry.getValue();
+                System.out.println(key + " " + value);
+            }
+            i++;
+        }
+    }
 }
