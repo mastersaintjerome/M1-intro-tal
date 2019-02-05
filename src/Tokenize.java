@@ -18,7 +18,6 @@ final public class Tokenize {
 	 * Construit l'arbre préfix depuis le Reader.
 	 */
 	{
-		
 		while(rd.hasNextLine()) {
 			rd.readLine();
 			code = rd.getWordCode();
