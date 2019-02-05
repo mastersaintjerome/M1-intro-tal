@@ -95,7 +95,14 @@ final public class Tokenize {
         String line = rd.readEntry();
         System.out.println(tokenizeString(line));
     }
-
+    
+    /*
+    * Tokenise une ligne passé en argument
+    */
+    public void tokenizeLine(String line) {
+        System.out.println(tokenizeString(line));
+    }
+    
     /*
      * return : renvoie la ligne à tokeniser traitée, afin de la rendre traitable plus facilement.
      */

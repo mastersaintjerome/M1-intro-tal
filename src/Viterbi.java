@@ -158,8 +158,8 @@ public class Viterbi {
     	for( i = 2; i < T; i++) {	
             N = treillis.get(i).size();
             for(j = 1; j < N; j++) {
-                //min = argmin{de k=1 a N} alpha[i-1,k] + perplexity.LP(w[i,j]|w[i-1,k]) + LPE(w[i,j],i);
-                //alpha[i][j] = alpha[i-1][min] + perplexity.LP(w(i-1, min), w(i,j)) + LPE(w(i,j),i);
+                //min = (int)/* argmin{de k=1 a N} alpha[i-1,k] + perplexity.LP(w[i,j]|w[i-1,k])+*/ LPE(w(i,j),i);
+                //alpha[i][j] = alpha[i-1][min] /*+ perplexity.LP(w(i-1, min), w(i,j))*/ + LPE(w(i,j),i);
                 beta[i][j] = min;
     	   } 
     	}

@@ -5,7 +5,7 @@
  */
 
 /**
- *
+ * Class pour définir un triplet
  * @author Gaëtan
  */
 public class Triplet<T, U, V> {
