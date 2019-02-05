@@ -2,10 +2,13 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import javafx.util.Pair;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -19,7 +22,7 @@ import java.util.Scanner;
  */
 public class Viterbi {
     private final String treillisFileName;//"exemple_treillis.txt"
-    private List<Map<Integer,Double>> treillis; 
+    private List<List<Pair<Integer,Double>>> treillis; 
     
     public Viterbi(String treillisFileName){
         this.treillisFileName = treillisFileName;
@@ -39,19 +42,22 @@ public class Viterbi {
                     fi.printStackTrace();
             }
         int currentCol = 0;
-        Map<Integer,Double> words = new HashMap<>();
+        List<Pair<Integer,Double>> words = new ArrayList<>();
+        
         while(scnr.hasNextLine()){
             String line = scnr.nextLine();
             String[] parts = line.split(" ",2);
             if("%col".equals(parts[0])){
                 int col = Integer.parseInt(parts[1]);
                 if(col != currentCol){
+                    Collections.sort(words, Comparator.comparing(p -> -p.getValue()));
                     treillis.add(words);
-                    words = new HashMap<>();
+                    words = new ArrayList<>();
                     currentCol = col;
                 }
             }else{
-                words.put(Integer.parseInt(parts[0]), Double.parseDouble(parts[1]));
+                Pair<Integer,Double> word = new Pair<>(Integer.parseInt(parts[0]), Double.parseDouble(parts[1]));
+                words.add(word);
             }   
         }
         if(words.size() != 0){
@@ -61,17 +67,16 @@ public class Viterbi {
     
     public void showTreillis(){
         int i =0;
-        for(Map<Integer,Double> items : treillis){
+        for(List<Pair<Integer,Double>> items : treillis){
             System.out.println("%col " + i);
-            for(Map.Entry<Integer, Double> entry : items.entrySet()) {
-                Integer key = entry.getKey();
-                Double value = entry.getValue();
+            for(Pair<Integer,Double> pair : items) {
+                Integer key = pair.getKey();
+                Double value = pair.getValue();
                 System.out.println(key + " " + value);
             }
             i++;
         }
     }
-    
     
     public static void main(String[] args) {
         Viterbi viterbi = new Viterbi("exemple_treillis.txt");
