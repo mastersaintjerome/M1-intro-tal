@@ -23,11 +23,8 @@ final public class Perplexity {
     final private BiGramList biGramList = new BiGramList();
 
     public Perplexity() {
-        /*
         oneGram.initFromFile();
         biGramList.initFromFile();
-        */
-
     }
 
     public OneGram getOneGram() {
@@ -170,7 +167,6 @@ final public class Perplexity {
             List<String> array = new ArrayList<>(arr);
             sentencePermutations.add(array);
         }
-        //System.out.println(Arrays.toString(arr.toArray()));
     }
     
     public void showSentencePermutations(){
@@ -182,7 +178,7 @@ final public class Perplexity {
     public static void main(String[] args) {
 
         Perplexity perplexity = new Perplexity();
-        /*
+        
         perplexity.getOneGram().printMap();
         perplexity.getBiGramList().printBiGram();
 
@@ -193,7 +189,7 @@ final public class Perplexity {
         String line = sc.nextLine();
 
         System.out.println(perplexity.PP(line));
-        */
+        
         perplexity.sentencePermutation(" ", " Je vol un avion");
         perplexity.showSentencePermutations();
     }
