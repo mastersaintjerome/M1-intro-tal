@@ -62,8 +62,14 @@ public class Code2Word {
     public static void main(String[] args) {
         Code2Word code2Word = new Code2Word();
         code2Word.read_lexicon("lexique_ratp_fr.txt");
+        String sentence;
         
-        String sentence = "3009 8976 2298 5926";
+        if(args.length == 1){
+            sentence = args[0];
+        }else{
+            sentence = "3009 8976 2298 5926";
+        }
+        
         String[] parts = sentence.split(" ");
         int partsLength = parts.length;
         StringBuilder convertSentence = new StringBuilder(100);
