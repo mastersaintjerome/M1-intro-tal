@@ -107,6 +107,12 @@ public class Viterbi {
      */ 
     public double LPE(int W, int index) {
     	//return treillis.get(index).get(W);
+        List<Pair<Integer,Double>> words = treillis.get(index);
+        for(int i =0; i < words.size();i++){
+            if(words.get(i).getKey() == W){
+                return words.get(i).getValue();
+            }
+        }
         return -1.0;
     }
     
