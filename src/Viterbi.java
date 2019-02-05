@@ -139,12 +139,12 @@ public class Viterbi {
     	alpha = new double[ T ][ N ];
     	beta = new double[ T ][ N ];
 
-		for( j = 1; j <= N; j++ ) {
-		    alpha[1][j] = LP0(w(1,j)) + LPE(w(1,j),1);
-		    beta[1][j] = 0;
+		for( j = 0; j < N; j++ ) {
+		    alpha[0][j] = LP0( w(0, j)) + LPE( w(0, j), 0);
+		    beta[0][j] = 0;
 		}
     	
-    	for( i = 2; i < T; i++) {
+    	for( i = 1; i < T; i++) {
     		
     		N = treillis.get(i).size();
     		
