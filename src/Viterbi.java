@@ -39,7 +39,7 @@ public class Viterbi {
                     fi.printStackTrace();
             }
         int currentCol = 0;
-        Map<Integer,Double> words = null;
+        Map<Integer,Double> words = new HashMap<>();
         while(scnr.hasNextLine()){
             String line = scnr.nextLine();
             String[] parts = line.split(" ",2);
@@ -47,14 +47,14 @@ public class Viterbi {
                 int col = Integer.parseInt(parts[1]);
                 if(col != currentCol){
                     treillis.add(words);
+                    words = new HashMap<>();
                     currentCol = col;
                 }
             }else{
-                words = new HashMap<>();
                 words.put(Integer.parseInt(parts[0]), Double.parseDouble(parts[1]));
             }   
         }
-        if(words != null){
+        if(words.size() != 0){
             treillis.add(words);
         }
     }
@@ -70,5 +70,12 @@ public class Viterbi {
             }
             i++;
         }
+    }
+    
+    
+    public static void main(String[] args) {
+        Viterbi viterbi = new Viterbi("exemple_treillis.txt");
+        viterbi.initFromFile();
+        viterbi.showTreillis();
     }
 }
