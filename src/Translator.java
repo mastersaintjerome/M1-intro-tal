@@ -46,6 +46,9 @@ public class Translator {
             * ToDo Faire la proba
              */
             Double proba = 0.0;
+            /*
+            * ToDo utiliser le tokenize
+            */
             writer.write(wordEn + " " + wordFr + " " + proba);
             writer.newLine();
             writer.flush();
@@ -53,5 +56,12 @@ public class Translator {
         scnr.close();
         scnr2.close();
         writer.close();
+    }
+    
+    /*
+    * Le traducteur anglais vers français
+    */
+    public void enlighToFrench(String englishSentence){
+        
     }
 }

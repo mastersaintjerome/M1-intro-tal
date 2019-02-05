@@ -101,10 +101,10 @@ final public class Tokenize {
     }
 
     /*
-    * Tokenise une ligne passé en argument
+    * Tokenise une ligne passé en argument et la retourne
      */
-    public void tokenizeLine(String line) {
-        System.out.println(tokenizeString(line));
+    public String tokenizeLine(String line) {
+        return tokenizeString(line);
     }
 
     /*
