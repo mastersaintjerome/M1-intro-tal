@@ -1,12 +1,15 @@
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import static java.util.Collections.swap;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.function.Function;
 
 /**
  *
@@ -116,11 +119,9 @@ final public class Perplexity {
         String[] parsedT = T.split(" ");
         int k = parsedT.length;
         int[] convertedT = new int[parsedT.length];
-
         for (int i = 0; i < k; i++) {
             convertedT[i] = Integer.parseInt(parsedT[i]);
         }
-
         return (float) ((float) -(1 / k) * logP(convertedT));
     }
 
@@ -173,6 +174,20 @@ final public class Perplexity {
         for(List<String> sentence : sentencePermutations){
             System.out.println(sentence.toString());
         }
+    }
+    
+    /*
+    * Calcul de la meilleur phrase
+    */
+    public float bestSentence(String sentence){
+        sentencePermutation(" ",sentence);
+        List<Float> perplexities = new ArrayList<>();
+        for(List<String> sentencePermute : sentencePermutations){
+            String line = sentencePermute.toString();
+            perplexities.add(PP(line));
+        }
+        Collections.sort(perplexities, Comparator.comparing((Float p) -> +p));
+        return perplexities.get(0);
     }
 
     public static void main(String[] args) {
