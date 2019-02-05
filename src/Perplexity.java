@@ -1,5 +1,9 @@
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import static java.util.Collections.swap;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
@@ -13,13 +17,16 @@ final public class Perplexity {
     final static public double alpha = 0.01;
     private Map<Integer, Float> probOneGram = new HashMap<Integer, Float>();
     private Map<BiGram, Float> probBiGram = new HashMap<BiGram, Float>();
+    private List<List<String>> sentencePermutations = new ArrayList<>();
 
     final private OneGram oneGram = new OneGram();
     final private BiGramList biGramList = new BiGramList();
 
     public Perplexity() {
+        /*
         oneGram.initFromFile();
         biGramList.initFromFile();
+        */
 
     }
 
@@ -147,11 +154,35 @@ final public class Perplexity {
             probBiGram.put(bigram, P(bigram.getPrevious(), bigram.getCurrent()));
         }
     }
+    
+    public void sentencePermutation(String separator, String sentence){
+        List<String> parts =new ArrayList<> (Arrays.asList(sentence.trim().split(separator)));
+        permute(parts,0);
+    }
+    
+    private void permute(List<String> arr, int k){
+        for(int i = k; i < arr.size(); i++){
+            swap(arr, i, k);
+            permute(arr, k+1);
+            swap(arr, k, i);
+        }
+        if (k == arr.size() -1){
+            List<String> array = new ArrayList<>(arr);
+            sentencePermutations.add(array);
+        }
+        //System.out.println(Arrays.toString(arr.toArray()));
+    }
+    
+    public void showSentencePermutations(){
+        for(List<String> sentence : sentencePermutations){
+            System.out.println(sentence.toString());
+        }
+    }
 
     public static void main(String[] args) {
 
         Perplexity perplexity = new Perplexity();
-
+        /*
         perplexity.getOneGram().printMap();
         perplexity.getBiGramList().printBiGram();
 
@@ -162,5 +193,8 @@ final public class Perplexity {
         String line = sc.nextLine();
 
         System.out.println(perplexity.PP(line));
+        */
+        perplexity.sentencePermutation(" ", " Je vol un avion");
+        perplexity.showSentencePermutations();
     }
 }

@@ -82,7 +82,7 @@ public class Viterbi {
             i++;
         }
     }
-
+    
     /*
     * affiche la meilleur phrase
      */
@@ -93,7 +93,6 @@ public class Viterbi {
             str += key + " ";
         }
         System.out.println(str);
-
     }
 
     /*
