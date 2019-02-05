@@ -31,7 +31,7 @@ public class Viterbi {
     }
     
     /*
-     * Lis un fichier et crée une liste de bi-gram.
+     * Lis un fichier et créer le treillis
      */
     public void initFromFile(){
             File text = new File(treillisFileName);
@@ -66,6 +66,9 @@ public class Viterbi {
         }
     }
     
+    /*
+    * Affiche le treillis
+    */
     public void showTreillis(){
         int i =0;
         for(List<Pair<Integer,Double>> items : treillis){
@@ -79,6 +82,9 @@ public class Viterbi {
         }
     }
     
+    /*
+    * affiche la meilleur phrase
+    */
     public void showBestSentence(){
         String str = "";
         for(List<Pair<Integer,Double>> items : treillis){
@@ -89,49 +95,43 @@ public class Viterbi {
         
     }
     
-    public double LP0(int W) 
     /*
      *  Return : Calcul et renvoie la probabilitée qu'une phrase commence par un mot W1.
      */
-    {
+    public double LP0(int W){
     	return perplexity.P(0, W);
     }
     
-    public double LPE(int W, int index) 
-    /*
+      /*
      *  Return : Calcul et renvoie la probabilité d’émission d’avoir le mot W à la position i dans le treillis.
-     */
-    {
+     */ 
+    public double LPE(int W, int index) {
     	//return treillis.get(index).get(W);
-    	
-    	
-    	
-    	
-    	
-    	
-    	return -1.0;
+        return -1.0;
     }
     
-    
+    /*
+    *
+    */
     public double argmin(int i, int j, int N) {
     	double min = 0;
     	
     	for(int k = 1; k < perplexity.getBiGramN(); k++) {
-    		
-    		
-    	}
-    	
+	
+    	} 	
     	return min;
     }
     
-    public int w(int i, int j) 
     /*
      * Return : renvoie le mot situé à la position i, alternative j dans la position.
      */
-    {
+    public int w(int i, int j) {
     	return -1; //treillis.get(i);
     }
     
+    /*
+    *
+    */
     public void viterbi() {
     	int i = 0, j = 0;
     	int min = 0;
@@ -144,19 +144,18 @@ public class Viterbi {
     	alpha = new double[ T ][ N ];
     	beta = new double[ T ][ N ];
 
-		for( j = 1; j <= N; j++ ) {
-		    alpha[1][j] = LP0(w(1,j)) + LPE(w(1,j),1);
-		    beta[1][j] = 0;
-		}
+        for( j = 1; j <= N; j++ ) {
+            alpha[1][j] = LP0(w(1,j)) + LPE(w(1,j),1);
+            beta[1][j] = 0;
+        }
     	
-    	for( i = 2; i < T; i++) {
+    	for( i = 2; i < T; i++) {	
+            N = treillis.get(i).size();
     		
-    		N = treillis.get(i).size();
-    		
-    		for(j = 1; j < N; j++) {
-    			//min = argmin{de k=1 a N} alpha[i-1,k] + perplexity.LP(w[i,j]|w[i-1,k]) + LPE(w[i,j],i);
-    			//alpha[i][j] = alpha[i-1][min] + perplexity.LP(w(i-1, min), w(i,j)) + LPE(w(i,j),i);
-    			beta[i][j] = min;
+            for(j = 1; j < N; j++) {
+                //min = argmin{de k=1 a N} alpha[i-1,k] + perplexity.LP(w[i,j]|w[i-1,k]) + LPE(w[i,j],i);
+                //alpha[i][j] = alpha[i-1][min] + perplexity.LP(w(i-1, min), w(i,j)) + LPE(w(i,j),i);
+                beta[i][j] = min;
     	   } 
     	}
     }
