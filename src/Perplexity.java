@@ -153,16 +153,10 @@ final public class Perplexity {
      * Calcul la probabilitée de chaque 1-gram et la stoque dans une Map.
      */
     {
-    	/*
     	
-    	keys;
-    	getBiGramList().getMapKeys();
-    	
-    	for(int key: keys) {
-    		//probBiGram.put(key, P(key));
+    	for(BiGram bigram : biGramList.getMapKeys()) {
+    		probBiGram.put(bigram, P(bigram.getPrevious(), bigram.getCurrent()));
     	}
-    	
-    	*/
     }
     
     public static void main(String[] args) {
@@ -178,7 +172,7 @@ final public class Perplexity {
         Scanner sc = new Scanner(System.in);
         String line = sc.nextLine();
         
-        
+        System.out.println(perplexity.PP(line));
         
         
     }

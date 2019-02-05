@@ -1,6 +1,8 @@
 import java.util.List;
-import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.Scanner;
+import java.util.Set;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -10,7 +12,7 @@ import java.io.FileNotFoundException;
 final public class BiGramList {
 	
 	private static final String BI_GRAM_FILE_NAME = "bi-gram.txt";
-	private List<BiGram> biGrams = new ArrayList<BiGram>(); 
+	private Map<BiGram, Integer> biGramsList = new HashMap<BiGram, Integer>();
 	
 	public void createBiGram(String line)
 	/*
@@ -30,24 +32,33 @@ final public class BiGramList {
 				BiGram biGram;
 				
 				if(i == 0){
-					biGram = new BiGram(0,Integer.parseInt(current),1);
+					biGram = new BiGram(0, Integer.parseInt(current));
 				}else{
-					biGram = new BiGram(Integer.parseInt(parsedLine[i-1]),Integer.parseInt(current),1);
+					biGram = new BiGram(Integer.parseInt(parsedLine[i-1]), Integer.parseInt(current));
 				}
 				
-				int index = biGrams.indexOf(biGram);
+				//int index = biGrams.indexOf(biGram);
+				int index = biGramsList.get(biGram);
 				
 				if(index != -1){
+					incrementNumberOf(biGram);
 					
-					biGrams.get(index).increment();
 				}else{
 					
-					biGrams.add(biGram);
+					biGramsList.put(biGram, 1);
 				}
 				
 				i++;
 			}
 		}
+	}
+	
+	public void incrementNumberOf(BiGram biGram)
+	/*
+	 * Incrémente le nombre d'occurence du bi-gram.
+	 */
+	{	
+		biGramsList.put(biGram, biGramsList.get(biGram) + 1);
 	}
 	
 	public List<BiGram> getBiGrams()
@@ -70,7 +81,7 @@ final public class BiGramList {
 			fw = new FileWriter(BI_GRAM_FILE_NAME);
 			bw = new BufferedWriter(fw);
 			
-			for (BiGram biGram: biGrams) {
+			for (BiGram biGram: biGramsList.keySet()) {
 				bw.write(biGram.toString());
 				bw.newLine();
 				bw.flush();
@@ -98,7 +109,7 @@ final public class BiGramList {
 	 * Affiche la liste des bi-grams.
 	 */
 	{
-		for (BiGram biGram: biGrams) {
+		for (BiGram biGram: biGramsList.keySet()) {
 			System.out.println(biGram.toString());
 		}
 	}
@@ -119,26 +130,26 @@ final public class BiGramList {
 		}
             while(scnr.hasNextLine()){
                 String line = scnr.nextLine();
-                String[] parts = line.split(" ",3);
-                biGrams.add(new BiGram(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]),Integer.parseInt(parts[2])));
+                String[] parts = line.split(" ", 3);
+                biGramsList.put(new BiGram(Integer.parseInt(parts[0]), Integer.parseInt(parts[1])), Integer.parseInt(parts[2]));
             }      
 	}
 	
-	public void getMapKeys() {
-		
+	public Set<BiGram> getMapKeys() 
+	/*
+	 * Return : renvoie l'ensemble des Keys de la map contenant les 2-grams.
+	 */
+	{
+		return biGramsList.keySet();
 	}
 	
-	public int getNumberOf(int prev, int curr) {
+	public int getNumberOf(int prev, int curr) 
+	/*
+	 * Return : renvoie le nombre d'occurence du 2-Gram.
+	 */
+	{
 		
-		BiGram biGram = new BiGram(prev, curr, 1);
-		
-		int index = biGrams.indexOf(biGram);
-		
-		if(index != -1){
-			return biGrams.get(index).getNomber();
-		}
-		
-		return -1;
+		return biGramsList.get(new BiGram(prev, curr));
 	}
 	
     public int getN()
@@ -148,8 +159,8 @@ final public class BiGramList {
     {
        int result = 0;
        
-       for(BiGram b : biGrams) {
-    	   result += b.getNomber();
+       for(BiGram key : biGramsList.keySet()) {
+    	   result += biGramsList.get(key);
        }
        
        return result;
@@ -160,6 +171,6 @@ final public class BiGramList {
      * return : Nombre de mots différents de la map.
      */
     {
-       return biGrams.size();
+       return biGramsList.keySet().size();
     }
 }

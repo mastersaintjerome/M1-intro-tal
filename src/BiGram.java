@@ -2,20 +2,10 @@ final public class BiGram {
 	
 	private int previous;
 	private int current;
-	private int number;
 	
-	public BiGram(int previous, int current, int number){
+	public BiGram(int previous, int current){
 		this.previous = previous;
 		this.current = current;
-		this.number = number;
-	}
-	
-	public void increment()
-	/*
-	 * Incrémente le nombre d'occurence du bi-gram.
-	 */
-	{
-		number++;
 	}
 	
 	public BiGram compareTo(BiGram other)
@@ -50,11 +40,7 @@ final public class BiGram {
     }
 	
 	public String toString(){
-		return previous + " " + current + " " + number;
-	}
-	
-	public int getNomber() {
-		return this.number;
+		return previous + " " + current + " ";
 	}
 	
 	public int getPrevious() {
