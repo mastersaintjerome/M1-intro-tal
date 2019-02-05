@@ -21,6 +21,9 @@ import javafx.util.Pair;
 public class Viterbi {
     private final String treillisFileName;//"exemple_treillis.txt"
     private List<List<Pair<Integer,Double>>> treillis; 
+    private Perplexity perplexity = new Perplexity();
+    private double[][] alpha;
+    private double[][] beta;
     
     public Viterbi(String treillisFileName){
         this.treillisFileName = treillisFileName;
