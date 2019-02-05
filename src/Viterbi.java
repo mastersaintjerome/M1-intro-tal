@@ -34,14 +34,15 @@ public class Viterbi {
      * Lis un fichier et créer le treillis
      */
     public void initFromFile(){
-            File text = new File(treillisFileName);
-            Scanner scnr = null;
-            try{
-                    scnr = new Scanner(text);
+        File text = new File(treillisFileName);
+        Scanner scnr = null;
+        try{
+                scnr = new Scanner(text);
 
-            }catch(FileNotFoundException fi){
-                    fi.printStackTrace();
-            }
+        }catch(FileNotFoundException fi){
+                fi.printStackTrace();
+        }
+        
         int currentCol = 0;
         List<Pair<Integer,Double>> words = new ArrayList<>();
         
