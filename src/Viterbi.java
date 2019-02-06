@@ -161,10 +161,29 @@ public class Viterbi {
     		for(j = 1; j < N; j++) {
     			//min = argmin{de k=1 a N} alpha[i-1,k] + perplexity.LP(w[i,j]|w[i-1,k]) + LPE(w[i,j],i);
     			min = argmin(i, j, N);
-    			alpha[i][j] = alpha[i-1][min] + perplexity.P(w(i-1, min), w(i,j)) + LPE(w(i,j),i);
+    			alpha[i][j] = alpha[i-1][min] + perplexity.P(w(i-1, min), w(i,j)) + LPE(w(i, j), i);
     			beta[i][j] = min;
     	   } 
     	}
+    }
+    
+    public void showBacktrackPath() {
+    	// Taille du treillis.
+    	int T = treillis.size();
+    	int N = treillis.get(0).size();
+    	
+    	StringBuilder strBuilder = new StringBuilder();
+    	
+    	for(int i = 0; i < T; i++) {
+    		for(int j = 0; j < N; j++) {
+    			
+    			if(beta[i][j] > 0.0) {
+    				strBuilder.append(w(i, j) + " ");
+    			}		
+    		}
+    	}
+    	
+    	System.out.println(strBuilder.toString());
     }
 
     public static void main(String[] args) {
@@ -172,5 +191,8 @@ public class Viterbi {
         viterbi.initFromFile();
         viterbi.showTreillis();
         viterbi.showBestSentence();
+        
+        viterbi.viterbi();
+        viterbi.showBacktrackPath();
     }
 }

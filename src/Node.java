@@ -116,6 +116,7 @@ final public class Node {
     			
         		setLeftChild( new Node( word.charAt(index), code) );
     		}
+    		
     		getLeftChild().addWord( code, word, index );
     	}
     }

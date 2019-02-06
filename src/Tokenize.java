@@ -22,14 +22,16 @@ final public class Tokenize {
 	 * Construit l'arbre préfix depuis le Reader.
      */
     public void buildTree() {
+    	
         while (rd.hasNextLine()) {
+        	
             rd.readLine();
             code = rd.getWordCode();
             String word = rd.getWord();
 
-            if (!word.isEmpty()) {
+            if ( ! word.isEmpty() ) {
                 if (root == null) {
-                    root = new Node(word.charAt(0), -1);
+                    root = new Node( word.charAt(0), -1 );
                 }
                 root.addWord(code, word, 0);
             }
@@ -40,6 +42,7 @@ final public class Tokenize {
      * return : le code du mot passé en paramettre.
      */
     public int searchWordCode(String word) {
+    	
         char c = 0;
         boolean needNewChar = true;
         boolean isFind = false;
@@ -47,7 +50,7 @@ final public class Tokenize {
 
         current = root;
 
-        while (!isFind || word.length() < 1) {
+        while ( ! isFind || word.length() < 1) {
 
             if (needNewChar) {
                 c = word.charAt(0);
@@ -64,20 +67,18 @@ final public class Tokenize {
                     needNewChar = true;
 
                     if (word.length() <= 1) {
-
                         isFind = true;
                         needNewChar = false;
+                        
                     } else {
 
                         word = word.substring(1);
                     }
                 } else {
-
                     current = this.current.getLeftChild();
                 }
 
             } else {
-
                 isFind = true;
                 code = 0;
             }
@@ -85,7 +86,7 @@ final public class Tokenize {
 
         current = root;
 
-        if (!isFind) {
+        if ( ! isFind ) {
             code = 0;
         }
 
@@ -119,13 +120,13 @@ final public class Tokenize {
      * Tokenise une chaine de mot en une chaine d'entiers correspondants.
      */
     public String tokenizeString(String str) {
+    	
         StringBuilder strTokenized = new StringBuilder(50);
+        str = prepareTokenizeString(str);
         String[] parts = str.split(" ");
         int partsLength = parts.length;
         int temp;
         int i = 0;
-
-        str = prepareTokenizeString(str);
 
         while (i < partsLength) {
             temp = searchWordCode(parts[i]);
