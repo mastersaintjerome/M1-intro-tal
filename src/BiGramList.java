@@ -27,24 +27,19 @@ final public class BiGramList {
 			
 			while(i < parsedLineLength){
 				
-				String current = parsedLine[i];
+				int current = Integer.parseInt(parsedLine[i]);
 				//System.out.println(current);
 				BiGram biGram;
 				
 				if(i == 0){
-					biGram = new BiGram(0, Integer.parseInt(current));
+					biGram = new BiGram(0, current);
 				}else{
-					biGram = new BiGram(Integer.parseInt(parsedLine[i-1]), Integer.parseInt(current));
+					biGram = new BiGram(Integer.parseInt(parsedLine[i-1]), current);
 				}
-				
-				//int index = biGrams.indexOf(biGram);
-				int index = biGramsList.get(biGram);
-				
-				if(index != -1){
+			
+				if( biGramsList.containsKey(biGram) ){
 					incrementNumberOf(biGram);
-					
 				}else{
-					
 					biGramsList.put(biGram, 1);
 				}
 				

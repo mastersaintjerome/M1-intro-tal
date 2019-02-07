@@ -40,7 +40,7 @@ final public class BiGram {
     }
 	
 	public String toString(){
-		return previous + " " + current + " ";
+		return previous + " " + current;
 	}
 	
 	public int getPrevious() {
