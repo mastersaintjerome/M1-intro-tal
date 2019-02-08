@@ -198,13 +198,9 @@ final public class Perplexity {
 
         perplexity.calculOneGramProbability();
         perplexity.calculBiGramProbability();
-
-        Scanner sc = new Scanner(System.in);
-        String line = sc.nextLine();
-
-        System.out.println(perplexity.PP(line));
         
         perplexity.sentencePermutation(" ", " Je vol un avion");
         perplexity.showSentencePermutations();
+        
     }
 }

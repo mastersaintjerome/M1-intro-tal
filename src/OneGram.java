@@ -147,8 +147,13 @@ final public class OneGram {
      * return : Nombre d'occurence de la clé key.
      */
     {
-    	return this.map.get(key);
+    	System.out.println(key);
+    	
+    	if (map.containsKey(key))
+    		return this.map.get(key);
+    	return -1;
     }
 
+    
 }
 

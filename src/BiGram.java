@@ -21,6 +21,17 @@ final public class BiGram {
 		return other;
 	}
 	
+	
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + current;
+		result = prime * result + previous;
+		return result;
+	}
+	
 	@Override
     public boolean equals(Object obj)
 	/*
@@ -29,7 +40,6 @@ final public class BiGram {
 	{
         if(obj instanceof BiGram){
             BiGram other = (BiGram) obj;
-            
 			if(this.previous == other.previous){
 				if(this.current == other.current){
 					return true;
@@ -38,6 +48,7 @@ final public class BiGram {
         }
         return false;
     }
+	
 	
 	public String toString(){
 		return previous + " " + current;

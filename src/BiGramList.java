@@ -77,7 +77,7 @@ final public class BiGramList {
 			bw = new BufferedWriter(fw);
 			
 			for (BiGram biGram: biGramsList.keySet()) {
-				bw.write(biGram.toString());
+				bw.write(biGram.toString() + " " + biGramsList.get(biGram));
 				bw.newLine();
 				bw.flush();
 			}
