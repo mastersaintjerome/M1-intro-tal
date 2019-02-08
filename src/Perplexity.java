@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
+import javafx.util.Pair;
 
 /**
  *
@@ -178,15 +179,15 @@ final public class Perplexity {
     /*
     * Calcul de la meilleur phrase
     */
-    public float bestSentence(String sentence){
+    public String bestSentence(String sentence){
         sentencePermutation(" ",sentence);
-        List<Float> perplexities = new ArrayList<>();
+        List<Pair<String,Float>> perplexities = new ArrayList<>();
         for(List<String> sentencePermute : sentencePermutations){
             String line = sentencePermute.toString();
-            perplexities.add(PP(line));
+            perplexities.add(new Pair(line,PP(line)));
         }
-        Collections.sort(perplexities, Comparator.comparing((Float p) -> +p));
-        return perplexities.get(0);
+        Collections.sort(perplexities, Comparator.comparing(p -> +p.getValue()));
+        return perplexities.get(0).getKey();
     }
 
     public static void main(String[] args) {
@@ -199,8 +200,10 @@ final public class Perplexity {
         perplexity.calculOneGramProbability();
         perplexity.calculBiGramProbability();
         
-        perplexity.sentencePermutation(" ", " Je vol un avion");
+        perplexity.sentencePermutation(" ", "Je vol un avion");
         perplexity.showSentencePermutations();
+        String sentence = perplexity.bestSentence("Je vol un avion");
+        System.out.println(sentence);
         
     }
 }
