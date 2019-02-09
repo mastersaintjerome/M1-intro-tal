@@ -120,7 +120,7 @@ final public class Perplexity {
         for (int i = 0; i < k; i++) {
             convertedT[i] = Integer.parseInt(parsedT[i]);
         }
-        return (float) ((float) -(1 / k) * logP(convertedT));
+        return ((float) -(1 / k) * logP(convertedT));
     }
 
     /*
@@ -181,8 +181,10 @@ final public class Perplexity {
         sentencePermutation(" ",sentence);
         List<Pair<String,Float>> perplexities = new ArrayList<>();
         for(List<String> sentencePermute : sentencePermutations){
-            String line = sentencePermute.toString();
-            perplexities.add(new Pair(line,PP(line)));
+            String line = String.join(" ",sentencePermute);
+            float perplexity = PP(line);
+            Pair<String,Float> pair = new Pair<>(line,perplexity);
+            perplexities.add(pair);
         }
         Collections.sort(perplexities, Comparator.comparing(p -> +p.getSecond()));
         return perplexities.get(0).getFirst();
@@ -202,6 +204,5 @@ final public class Perplexity {
         perplexity.showSentencePermutations();
         String sentence = perplexity.bestSentence("Je vol un avion");
         System.out.println(sentence);
-        
     }
 }
