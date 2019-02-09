@@ -7,9 +7,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.Set;
-import javafx.util.Pair;
 
 /**
  *
@@ -186,8 +184,8 @@ final public class Perplexity {
             String line = sentencePermute.toString();
             perplexities.add(new Pair(line,PP(line)));
         }
-        Collections.sort(perplexities, Comparator.comparing(p -> +p.getValue()));
-        return perplexities.get(0).getKey();
+        Collections.sort(perplexities, Comparator.comparing(p -> +p.getSecond()));
+        return perplexities.get(0).getFirst();
     }
 
     public static void main(String[] args) {

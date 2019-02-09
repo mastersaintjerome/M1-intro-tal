@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
-import javafx.util.Pair;
 
 /**
  *
@@ -46,7 +45,7 @@ public class Viterbi {
             if ("%col".equals(parts[0])) {
                 int col = Integer.parseInt(parts[1]);
                 if (col != currentCol) {
-                    Collections.sort(words, Comparator.comparing(p -> +p.getValue()));
+                    Collections.sort(words, Comparator.comparing(p -> +p.getSecond()));
                     treillis.add(words);
                     words = new ArrayList<>();
                     currentCol = col;
@@ -69,8 +68,8 @@ public class Viterbi {
         for (List<Pair<Integer, Double>> items : treillis) {
             System.out.println("%col " + i);
             for (Pair<Integer, Double> pair : items) {
-                Integer key = pair.getKey();
-                Double value = pair.getValue();
+                Integer key = pair.getFirst();
+                Double value = pair.getSecond();
                 System.out.println(key + " " + value);
             }
             i++;
@@ -83,7 +82,7 @@ public class Viterbi {
     public void showBestSentence() {
         String str = "";
         for (List<Pair<Integer, Double>> items : treillis) {
-            Integer key = items.get(0).getKey();
+            Integer key = items.get(0).getFirst();
             str += key + " ";
         }
         System.out.println(str);
@@ -104,8 +103,8 @@ public class Viterbi {
         List<Pair<Integer, Double>> words = treillis.get(index);
         
         for (int i = 0; i < words.size(); i++) {
-            if (words.get(i).getKey() == W) {
-                return words.get(i).getValue();
+            if (words.get(i).getFirst() == W) {
+                return words.get(i).getSecond();
             }
         }
         
@@ -134,7 +133,7 @@ public class Viterbi {
      * Return : renvoie le mot situé à la position i, alternative j dans la position.
      */
     public int w(int i, int j) {
-        return treillis.get(i).get(j).getKey();
+        return treillis.get(i).get(j).getFirst();
     }
 
     public void viterbi() {
