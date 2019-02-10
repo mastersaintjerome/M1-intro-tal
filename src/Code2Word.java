@@ -31,7 +31,7 @@ public class Code2Word {
         while(scnr.hasNextLine()){
             String line = scnr.nextLine();
             String[] parts = line.split(" ",2);
-            int code = Integer.parseInt(parts[1]);
+            int code = Integer.parseInt(parts[0]);
             if(maxCode < code) maxCode = code;
         }
         //Prepare tab
@@ -49,8 +49,8 @@ public class Code2Word {
         while(scnr.hasNextLine()){
             String line = scnr.nextLine();
             String[] parts = line.split(" ",2);
-            int code = Integer.parseInt(parts[1]);
-            String word = parts[0];
+            int code = Integer.parseInt(parts[0]);
+            String word = parts[1];
             lexicon[code] = word;
         }
     }
