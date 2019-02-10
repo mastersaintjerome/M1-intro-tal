@@ -21,6 +21,9 @@ public class Translator {
 
     private final List<Triplet<Integer, Integer, Double>> translatorTable;
     private static final String TRANSLATOR_TABLE_FILE_NAME = "table-traduction.txt";
+    
+    private Tokenize tokenizeFr;
+    private Tokenize tokenizeEn;
 
     public Translator() {
         translatorTable = new ArrayList<>();
@@ -64,4 +67,16 @@ public class Translator {
     public void enlighToFrench(String englishSentence){
         
     }
+    
+    public void setTokenizeFr(String filename) {
+    	tokenizeFr = new Tokenize(filename);
+    	tokenizeFr.buildTree();
+    	
+    }
+    
+    public void setTokenizeEn(String filename) {
+    	tokenizeEn = new Tokenize(filename);
+    	tokenizeEn.buildTree();
+    }
+    
 }

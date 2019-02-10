@@ -119,7 +119,7 @@ public class Viterbi {
         double min = 10, tempMin = 0;
         int indexMin = -1;
         
-        for (int k = 1; k < perplexity.getBiGramN(); k++) {
+        for (int k = 1; k < N; k++) {
         	tempMin = alpha[i-1][k] + perplexity.P(w(i-1, k), w(i, j)) + LPE(w(i, j), i);
         	
         	if(min > tempMin) {
@@ -159,7 +159,6 @@ public class Viterbi {
     		N = treillis.get(i).size();
     		
     		for(j = 1; j < N; j++) {
-    			//min = argmin{de k=1 a N} alpha[i-1,k] + perplexity.LP(w[i,j]|w[i-1,k]) + LPE(w[i,j],i);
     			min = argmin(i, j, N);
     			alpha[i][j] = alpha[i-1][min] + perplexity.P(w(i-1, min), w(i,j)) + LPE(w(i, j), i);
     			beta[i][j] = min;
@@ -183,11 +182,11 @@ public class Viterbi {
     		}
     	}
     	
-    	System.out.println(strBuilder.toString());
+    	System.out.println("Best Path : \n" + strBuilder.toString());
     }
 
     public static void main(String[] args) {
-        Viterbi viterbi = new Viterbi("exemple_treillis.txt");
+        Viterbi viterbi = new Viterbi("../exemple_treillis.txt");
         viterbi.initFromFile();
         viterbi.showTreillis();
         viterbi.showBestSentence();

@@ -143,8 +143,12 @@ final public class BiGramList {
 	 * Return : renvoie le nombre d'occurence du 2-Gram.
 	 */
 	{
+		BiGram bigram = new BiGram(prev, curr);
 		
-		return biGramsList.get(new BiGram(prev, curr));
+		if(biGramsList.containsKey(bigram))
+			return biGramsList.get(bigram);
+		
+		else return 0;
 	}
 	
     public int getN()

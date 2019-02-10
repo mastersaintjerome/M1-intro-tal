@@ -130,27 +130,6 @@ final public class Perplexity {
     public float PP(String T) {
         return (float) Math.pow(2, LP(T));
     }
-
-    /*
-     * Calcul la probabilitée de chaque 1-gram et la stoque dans une Map.
-     */
-    public void calculOneGramProbability() {
-        Set<Integer> keys = getOneGram().getMapKeys();
-
-        for (int key : keys) {
-            probOneGram.put(key, P(key));
-        }
-
-    }
-
-    /*
-     * Calcul la probabilitée de chaque 1-gram et la stoque dans une Map.
-     */
-    public void calculBiGramProbability() {
-        for (BiGram bigram : biGramList.getMapKeys()) {
-            probBiGram.put(bigram, P(bigram.getPrevious(), bigram.getCurrent()));
-        }
-    }
     
     public void sentencePermutation(String separator, String sentence){
         List<String> parts =new ArrayList<> (Arrays.asList(sentence.trim().split(separator)));
@@ -195,9 +174,6 @@ final public class Perplexity {
         
         perplexity.getOneGram().printMap();
         perplexity.getBiGramList().printBiGram();
-
-        perplexity.calculOneGramProbability();
-        perplexity.calculBiGramProbability();
         
         perplexity.sentencePermutation(" ", " Je vol un avion");
         perplexity.showSentencePermutations();
