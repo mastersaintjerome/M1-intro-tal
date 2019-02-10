@@ -195,7 +195,7 @@ public class Viterbi {
             for (int j = N-1; j >= 0; j--) {
                 if (beta[i][j] > -1.0) {
                     System.out.println( "Beta [" + i + "]["+ j +"] " + beta[i][j]);
-                    strBuilder.append(w(i, j) + " ");
+                    strBuilder.append(w(i, j)).append(" ");
                     break;
                 }
             }
