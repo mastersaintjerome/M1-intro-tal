@@ -176,9 +176,9 @@ final public class Perplexity {
         perplexity.getOneGram().printMap();
         perplexity.getBiGramList().printBiGram();
         
-        perplexity.sentencePermutation(" ", "Je vol un avion");
-        perplexity.showSentencePermutations();
-        String sentence = perplexity.bestSentence("Je vol un avion");
-        System.out.println(sentence);
+        //perplexity.sentencePermutation(" ", "Je vol un avion");
+        //perplexity.showSentencePermutations();
+        //String sentence = perplexity.bestSentence("Je vol un avion");
+        //System.out.println(sentence);
     }
 }
