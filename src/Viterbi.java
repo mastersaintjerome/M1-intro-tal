@@ -189,11 +189,11 @@ public class Viterbi {
         int N = treillis.get(0).size();
         StringBuilder strBuilder = new StringBuilder(50);
         for (int i = 0; i < T; i++) {
-            for (int j = 0; j < N; j++) {
-                System.out.println( "Beta [" + i + "]["+ j +"] " + beta[i][j]);
-                
+            for (int j = N-1; j >= 0; j--) {
                 if (beta[i][j] > -1.0) {
+                    System.out.println( "Beta [" + i + "]["+ j +"] " + beta[i][j]);
                     strBuilder.append(w(i, j) + " ");
+                    break;
                 }
             }
         }
