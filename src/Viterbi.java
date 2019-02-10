@@ -1,6 +1,8 @@
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -75,7 +77,7 @@ public class Viterbi {
             i++;
         }
     }
-    
+
     /*
      * Affiche la meilleure phrase.
      */
@@ -99,33 +101,34 @@ public class Viterbi {
      *  Return : Calcul et renvoie la probabilité d’émission d’avoir le mot W à la position i dans le treillis.
      */
     public double LPE(int W, int index) {
-    	
+
         List<Pair<Integer, Double>> words = treillis.get(index);
-        
+
         for (int i = 0; i < words.size(); i++) {
             if (words.get(i).getFirst() == W) {
                 return words.get(i).getSecond();
             }
         }
-        
         return -1.0;
     }
 
     /*
-     *
+     * calcul argmin
      */
     public int argmin(int i, int j, int N) {
-        double min = 10, tempMin = 0;
+        double min = 10.0, tempMin = 0.0;
         int indexMin = -1;
-        
-        for (int k = 1; k < N; k++) {
-        	tempMin = alpha[i-1][k] + perplexity.P(w(i-1, k), w(i, j)) + LPE(w(i, j), i);
-        	
-        	if(min > tempMin) {
-        		indexMin = k;
-        		min = tempMin;
-        	}
+        System.out.println("N = " + N);
+        for (int k = 0; k < N; k++) {
+            tempMin = alpha[i - 1][k] + perplexity.P(w(i - 1, k), w(i, j)) + LPE(w(i, j), i);
+            System.out.println("K = " + k + "; i = " + i + "; j = " + j + "; tempMin = " + tempMin);
+            if (min > tempMin) {
+                System.out.println(" i = " + i + "; j = " + j + "; K = " + k);
+                indexMin = k;
+                min = tempMin;
+            }
         }
+        System.out.println("indexMin = " + indexMin);
         return indexMin;
     }
 
@@ -137,59 +140,73 @@ public class Viterbi {
     }
 
     public void viterbi() {
-    	
-    	int i = 0, j = 0;
-    	int min = 0;
-  
-    	// Taille du treillis.
-    	int T = treillis.size();
-    	int N = treillis.get(0).size();
-    	
-    	alpha = new double[ T ][ N ];
-    	beta = new double[ T ][ N ];
 
-		for( j = 0; j < N; j++ ) {
-		    alpha[0][j] = LP0( w(0, j)) + LPE( w(0, j), 0);
-		    beta[0][j] = 0;
-		}
-    	
-    	for( i = 1; i < T; i++) {
-    		
-    		N = treillis.get(i).size();
-    		
-    		for(j = 1; j < N; j++) {
-    			min = argmin(i, j, N);
-    			alpha[i][j] = alpha[i-1][min] + perplexity.P(w(i-1, min), w(i,j)) + LPE(w(i, j), i);
-    			beta[i][j] = min;
-    	   } 
-    	}
+        int i = 0, j = 0;
+        int min = 0;
+
+        // Taille du treillis.
+        int T = treillis.size();
+        int N = treillis.get(0).size();
+
+        alpha = new double[T][N];
+        beta = new double[T][N];
+
+        double minTemp = 10.0;
+        double minCalcul;
+        int betaBestJ = 0;
+        
+        for(i = 0; i < T; i++){
+            Arrays.fill(beta[i],-1.0);
+        }
+        
+        for (j = 0; j < N; j++) {
+            minCalcul = LP0(w(0, j)) + LPE(w(0, j), 0);
+            if(minTemp > minCalcul){
+                betaBestJ = j;
+                minTemp = minCalcul;
+            }
+            alpha[0][j] = minCalcul;
+            beta[0][j] = -1.0;
+        }
+        
+        beta[0][betaBestJ] = alpha[0][betaBestJ];
+
+        for (i = 1; i < T; i++) {
+
+            N = treillis.get(i).size();
+
+            for (j = 0; j < N; j++) {
+                min = argmin(i, j, N);
+                alpha[i][j] = alpha[i - 1][min] + perplexity.P(w(i - 1, min), w(i, j)) + LPE(w(i, j), i);
+                beta[i][j] = min;
+            }
+        }
     }
-    
+
     public void showBacktrackPath() {
-    	// Taille du treillis.
-    	int T = treillis.size();
-    	int N = treillis.get(0).size();
-    	
-    	StringBuilder strBuilder = new StringBuilder();
-    	
-    	for(int i = 0; i < T; i++) {
-    		for(int j = 0; j < N; j++) {
-    			
-    			if(beta[i][j] > 0.0) {
-    				strBuilder.append(w(i, j) + " ");
-    			}		
-    		}
-    	}
-    	
-    	System.out.println("Best Path : \n" + strBuilder.toString());
+        // Taille du treillis.
+        int T = treillis.size();
+        int N = treillis.get(0).size();
+        StringBuilder strBuilder = new StringBuilder(50);
+        for (int i = 0; i < T; i++) {
+            for (int j = 0; j < N; j++) {
+                System.out.println( "Beta [" + i + "]["+ j +"] " + beta[i][j]);
+                
+                if (beta[i][j] > -1.0) {
+                    strBuilder.append(w(i, j) + " ");
+                }
+            }
+        }
+
+        System.out.println("Best Path : \n" + strBuilder.toString());
     }
 
     public static void main(String[] args) {
         Viterbi viterbi = new Viterbi("../exemple_treillis.txt");
         viterbi.initFromFile();
-        viterbi.showTreillis();
-        viterbi.showBestSentence();
-        
+        //viterbi.showTreillis();
+        //viterbi.showBestSentence();
+
         viterbi.viterbi();
         viterbi.showBacktrackPath();
     }
