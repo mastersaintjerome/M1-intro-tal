@@ -29,6 +29,7 @@ public class Viterbi {
      * Créer un treillis et l'initialise à partir d'un fichier.
      */
     public void initFromFile() {
+    	
         File text = new File(treillisFileName);
         Scanner scnr = null;
         try {
@@ -119,9 +120,11 @@ public class Viterbi {
         double min = 10.0, tempMin = 0.0;
         int indexMin = -1;
         System.out.println("N = " + N);
+        
         for (int k = 0; k < N; k++) {
             tempMin = alpha[i - 1][k] + perplexity.P(w(i - 1, k), w(i, j)) + LPE(w(i, j), i);
             System.out.println("K = " + k + "; i = " + i + "; j = " + j + "; tempMin = " + tempMin);
+            
             if (min > tempMin) {
                 System.out.println(" i = " + i + "; j = " + j + "; K = " + k);
                 indexMin = k;
