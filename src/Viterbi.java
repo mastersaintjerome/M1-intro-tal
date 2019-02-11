@@ -198,6 +198,29 @@ public class Viterbi {
         System.out.println("indexMin = " + indexMin);
         return indexMin;
     }
+    
+        /*
+     * calcul argmin
+     */
+    public int argminTranslateTable(int i, int j, int N) {
+        double min = 100.0, tempMin = 0.0;
+        int indexMin = -1;
+        System.out.println("N = " + N);
+        
+        for (int k = 0; k < N; k++) {
+            tempMin = alpha[i - 1][k] + perplexity.logP(wTranslateTable(i - 1, k), wTranslateTable(i, j)) + LPETranslateTable(w(i, j), i);
+            System.out.println("Beta [" + i + "]["+ j +"] " + "= " + tempMin);
+            //System.out.println("K = " + k + "; i = " + i + "; j = " + j + "; tempMin = " + tempMin);
+            
+            if (min > tempMin) {
+                System.out.println(" i = " + i + "; j = " + j + "; K = " + k);
+                indexMin = k;
+                min = tempMin;
+            }
+        }
+        System.out.println("indexMin = " + indexMin);
+        return indexMin;
+    }
 
     /*
      * Return : renvoie le mot situé à la position i, alternative j dans la position.
