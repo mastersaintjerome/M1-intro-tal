@@ -20,7 +20,7 @@ public class Viterbi {
     private final String treillisFileName;//"exemple_treillis.txt"
     private List<List<Pair<Integer, Double>>> treillis;
     private Perplexity perplexity = new Perplexity();
-    private Map<Integer,LinkedHashMap<Integer,Double>> translateTable;
+    private Map<Integer,List<Pair<Integer, Double>>> translateTable;
     private double[][] alpha;
     private int[][] beta;
 
@@ -39,7 +39,7 @@ public class Viterbi {
         } catch (FileNotFoundException fi) {
             fi.printStackTrace();
         }
-        LinkedHashMap<Integer,Double> frenchProba = new LinkedHashMap<>();
+        List<Pair<Integer, Double>> frenchProba = new ArrayList<>();
         int englishWord = -1;
         int currentWord = -1;
         while (scnr.hasNextLine()) {
@@ -49,10 +49,11 @@ public class Viterbi {
                 if(currentWord != englishWord){
                     translateTable.put(englishWord, frenchProba);
                 }
-                frenchProba = new LinkedHashMap<>();
+                frenchProba = new ArrayList<>();
                 englishWord = Integer.parseInt(parts[0]);
             }
-            frenchProba.put(Integer.parseInt(parts[1]), Double.parseDouble(parts[2]));
+            Pair<Integer, Double> word = new Pair<>(Integer.parseInt(parts[1]), Double.parseDouble(parts[2]));
+            frenchProba.add(word);
         }
         if(frenchProba.size() > 0){
             translateTable.put(englishWord, frenchProba);
@@ -63,10 +64,10 @@ public class Viterbi {
      * Affiche le treillis.
      */
     public void showTranslateTable() {
-        for (Map.Entry<Integer,LinkedHashMap<Integer,Double>> entry : translateTable.entrySet()) {
-            for (Map.Entry<Integer,Double> pair : entry.getValue().entrySet()) {
-                Integer key = pair.getKey();
-                Double value = pair.getValue();
+        for (Map.Entry<Integer,List<Pair<Integer, Double>>> entry : translateTable.entrySet()) {
+            for (Pair<Integer,Double> pair : entry.getValue()) {
+                Integer key = pair.getFirst();
+                Double value = pair.getSecond();
                 System.out.println(entry.getKey() + " " +key + " " + value);
             }
         }
