@@ -39,22 +39,23 @@ public class Viterbi {
         } catch (FileNotFoundException fi) {
             fi.printStackTrace();
         }
-        LinkedHashMap<Integer,Double> frenchProba = null;
+        LinkedHashMap<Integer,Double> frenchProba = new LinkedHashMap<>();
         int englishWord = -1;
+        int currentWord = -1;
         while (scnr.hasNextLine()) {
             String line = scnr.nextLine();
             String[] parts = line.split(" ", 3);
-            if(translateTable.containsKey(Integer.parseInt(parts[0])) && frenchProba != null){
+            if(translateTable.containsKey(Integer.parseInt(parts[0]))){
                 frenchProba.put(Integer.parseInt(parts[1]), Double.parseDouble(parts[2]));
             }else{
-                if(frenchProba != null){
+                if(currentWord != englishWord){
                     translateTable.put(englishWord, frenchProba);
                 }
                 frenchProba = new LinkedHashMap<>();
                 englishWord = Integer.parseInt(parts[0]);
             }
         }
-        if(frenchProba != null){
+        if(frenchProba.size() > 0){
             translateTable.put(englishWord, frenchProba);
         }
     }
