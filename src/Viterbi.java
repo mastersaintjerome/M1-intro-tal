@@ -123,7 +123,8 @@ public class Viterbi {
         
         for (int k = 0; k < N; k++) {
             tempMin = alpha[i - 1][k] + perplexity.logP(w(i - 1, k), w(i, j)) + LPE(w(i, j), i);
-            System.out.println("K = " + k + "; i = " + i + "; j = " + j + "; tempMin = " + tempMin);
+            System.out.println("Beta [" + i + "]["+ j +"] " + "= " + tempMin);
+            //System.out.println("K = " + k + "; i = " + i + "; j = " + j + "; tempMin = " + tempMin);
             
             if (min > tempMin) {
                 System.out.println(" i = " + i + "; j = " + j + "; K = " + k);
@@ -143,8 +144,6 @@ public class Viterbi {
     }
 
     public void viterbi() {
-
-        int i = 0, j = 0;
         int min = 0;
 
         // Taille du treillis.
@@ -154,18 +153,18 @@ public class Viterbi {
         alpha = new double[T][N];
         beta = new int[T][N];
         
-        for(i = 0; i < T; i++){
+        for(int i = 0; i < T; i++){
             Arrays.fill(beta[i], -1);
         }
         
-        for (j = 0; j < N; j++) {
+        for (int j = 0; j < N; j++) {
             alpha[0][j] = LP0(w(0, j)) + LPE(w(0, j), 0);
             beta[0][j] = -1;
         }
 
-        for (i = 1; i < T; i++) {
+        for (int i = 1; i < T; i++) {
             N = treillis.get(i).size();
-            for (j = 0; j < N; j++) {
+            for (int j = 0; j < N; j++) {
                 min = argmin(i, j, treillis.get(i-1).size());
                 alpha[i][j] = alpha[i - 1][min] + perplexity.logP(w(i - 1, min), w(i, j)) + LPE(w(i, j), i);
                 beta[i][j] = min;
