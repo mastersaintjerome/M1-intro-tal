@@ -97,8 +97,11 @@ final public class Tokenize {
      * Tokenise une ligne depuis l'entrée standard.
      */
     public void tokenizeInput() {
-        String line = rd.readEntry();
-        System.out.println(tokenizeString(line));
+    	String line;
+        while(rd.hasEntryNextLine()) {
+        	line = rd.readEntry();
+        	System.out.println(tokenizeString(line));
+        }  
     }
 
     /*

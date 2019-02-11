@@ -61,6 +61,10 @@ final public class Reader {
 		return entry.nextLine();
 	}
 	
+	public boolean hasEntryNextLine() {
+		return entry.hasNextLine();
+	}
+	
 	public int getWordCode() {
 		return wordCode;
 	}
