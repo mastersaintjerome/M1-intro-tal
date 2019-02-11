@@ -160,6 +160,21 @@ public class Viterbi {
         }
         return 0.0;
     }
+    
+        /*
+     *  Return : Calcul et renvoie la probabilité d’émission d’avoir le mot W à la position i dans le treillis.
+     */
+    public double LPETranslateTable(int W, int index) {
+
+        List<Pair<Integer, Double>> words = translateTable.get(index);
+
+        for (int i = 0; i < words.size(); i++) {
+            if (words.get(i).getFirst() == W) {
+                return words.get(i).getSecond();
+            }
+        }
+        return 0.0;
+    }
 
     /*
      * calcul argmin
@@ -189,6 +204,46 @@ public class Viterbi {
      */
     public int w(int i, int j) {
         return treillis.get(i).get(j).getFirst();
+    }
+    
+    /*
+     * Return : renvoie le mot situé à la position i, alternative j dans la position.
+     */
+    public int wTranslateTable(int i, int j) {
+        return translateTable.get(i).get(j).getFirst();
+    }
+    
+    /*
+    * ToDo finir viterbi Translate table
+    */
+    public void viterbiTranslateTable(String tokenizeEnglishStr) {
+        int min = 0;
+
+        // Taille du treillis.
+        String[] parts = tokenizeEnglishStr.split(" ");
+        int T = parts.length;
+        int N = translateTable.get(Integer.parseInt(parts[0])).size();
+
+        alpha = new double[T][N];
+        beta = new int[T][N];
+        
+        for(int i = 0; i < T; i++){
+            Arrays.fill(beta[i], -1);
+        }
+        
+        for (int j = 0; j < N; j++) {
+            alpha[0][j] = LP0(w(0, j)) + LPE(w(0, j), 0);
+            beta[0][j] = -1;
+        }
+
+        for (int i = 1; i < T; i++) {
+            N = translateTable.get(Integer.parseInt(parts[i])).size();
+            for (int j = 0; j < N; j++) {
+                min = argmin(i, j, translateTable.get(Integer.parseInt(parts[i-1])).size());
+                alpha[i][j] = alpha[i - 1][min] + perplexity.logP(w(i - 1, min), w(i, j)) + LPE(w(i, j), i);
+                beta[i][j] = min;
+            }
+        }
     }
 
     public void viterbi() {
