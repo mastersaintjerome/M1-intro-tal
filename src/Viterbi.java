@@ -53,6 +53,7 @@ public class Viterbi {
                 }
                 frenchProba = new LinkedHashMap<>();
                 englishWord = Integer.parseInt(parts[0]);
+                frenchProba.put(Integer.parseInt(parts[1]), Double.parseDouble(parts[2]));
             }
         }
         if(frenchProba.size() > 0){
