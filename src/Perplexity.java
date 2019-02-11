@@ -92,9 +92,17 @@ final public class Perplexity {
      * Return : Calcul et renvois la probabilitée d'un bigram donné.
      */
     public float P(int Wi, int Wj) {
-        return (float) ((C(Wi, Wj) + alpha) / (oneGram.getNumberOf(Wi) + (biGramList.getV() * alpha)));
+        return (float) ((C(Wi, Wj) + alpha) / (oneGram.getNumberOf(Wi) + (oneGram.getV() * alpha)));
     }
 
+    public float logP(int Wi) {
+    	return (float) -Math.log(P(Wi));
+    }
+    
+    public float logP(int Wi, int Wj) {
+    	return (float) -Math.log(P(Wi, Wj));
+    }
+    
     /*
      * Return : Calcul et renvoie la somme des logarithme de toutes les probabilitées des mots en entrée.
      */

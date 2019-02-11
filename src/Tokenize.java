@@ -7,7 +7,7 @@ final public class Tokenize {
 
     private Node root = null;
     private Node current = root;
-    private int code = -1;
+    private int code = 0;
     private Reader rd = null;
 
     public Tokenize() {
@@ -31,7 +31,7 @@ final public class Tokenize {
 
             if ( ! word.isEmpty() ) {
                 if (root == null) {
-                    root = new Node( word.charAt(0), -1 );
+                    root = new Node( word.charAt(0), 0);
                 }
                 root.addWord(code, word, 0);
             }

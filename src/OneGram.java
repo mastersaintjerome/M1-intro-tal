@@ -151,7 +151,7 @@ final public class OneGram {
     	
     	if (map.containsKey(key))
     		return this.map.get(key);
-    	return -1;
+    	return 0;
     }
 
     

@@ -95,7 +95,7 @@ public class Viterbi {
      *  Return : Calcul et renvoie la probabilitée qu'une phrase commence par un mot W1.
      */
     public double LP0(int W) {
-        return perplexity.P(0, W);
+        return perplexity.logP(0, W);
     }
 
     /*
@@ -110,19 +110,19 @@ public class Viterbi {
                 return words.get(i).getSecond();
             }
         }
-        return -1.0;
+        return 0.0;
     }
 
     /*
      * calcul argmin
      */
     public int argmin(int i, int j, int N) {
-        double min = 10.0, tempMin = 0.0;
+        double min = 100.0, tempMin = 0.0;
         int indexMin = -1;
         System.out.println("N = " + N);
         
         for (int k = 0; k < N; k++) {
-            tempMin = alpha[i - 1][k] + perplexity.P(w(i - 1, k), w(i, j)) + LPE(w(i, j), i);
+            tempMin = alpha[i - 1][k] + perplexity.logP(w(i - 1, k), w(i, j)) + LPE(w(i, j), i);
             System.out.println("K = " + k + "; i = " + i + "; j = " + j + "; tempMin = " + tempMin);
             
             if (min > tempMin) {
@@ -154,16 +154,16 @@ public class Viterbi {
         alpha = new double[T][N];
         beta = new double[T][N];
 
-        double minTemp = 10.0;
+        double minTemp = 100.0;
         double minCalcul;
         int betaBestJ = 0;
         
         for(i = 0; i < T; i++){
-            Arrays.fill(beta[i],-1.0);
+            Arrays.fill(beta[i], -1.0);
         }
         
         for (j = 0; j < N; j++) {
-            minCalcul = LP0(w(0, j)) + LPE(w(0, j), 0);
+            minCalcul =  LP0(w(0, j)) + LPE(w(0, j), 0);
             if(minTemp > minCalcul){
                 betaBestJ = j;
                 minTemp = minCalcul;
@@ -172,15 +172,15 @@ public class Viterbi {
             beta[0][j] = -1.0;
         }
         
-        beta[0][betaBestJ] = alpha[0][betaBestJ];
+        //beta[0][betaBestJ] = alpha[0][betaBestJ];
 
         for (i = 1; i < T; i++) {
 
             N = treillis.get(i).size();
 
             for (j = 0; j < N; j++) {
-                min = argmin(i, j, N);
-                alpha[i][j] = alpha[i - 1][min] + perplexity.P(w(i - 1, min), w(i, j)) + LPE(w(i, j), i);
+                min = argmin(i, j, treillis.get(i-1).size());
+                alpha[i][j] = alpha[i - 1][min] + perplexity.logP(w(i - 1, min), w(i, j)) + LPE(w(i, j), i);
                 beta[i][j] = min;
             }
         }
@@ -189,18 +189,36 @@ public class Viterbi {
     public void showBacktrackPath() {
         // Taille du treillis.
         int T = treillis.size();
-        int N = treillis.get(0).size();
-        StringBuilder strBuilder = new StringBuilder(50);
-        for (int i = 0; i < T; i++) {
-            for (int j = N-1; j >= 0; j--) {
-                if (beta[i][j] > -1.0) {
+        int N = treillis.get(T-1).size();
+        //StringBuilder strBuilder = new StringBuilder(50);
+        ArrayList<String> strBuilder = new ArrayList<>();
+        int minEntry = (int) beta[T-1][0];
+        int minProbaJ = 0;
+        for(int j = 1; j < N;j++) {
+    		if(alpha[T-1][j] < alpha[T-1][minProbaJ]) {
+    			minEntry = (int) beta[T-1][j];
+    			minProbaJ = j;
+    		}
+        }
+        
+        System.out.println( "Beta [" + (T-1) + "]["+ minProbaJ +"] " + beta[T-1][minProbaJ]);
+        
+        //strBuilder.append(w(T-1, minProbaJ)).append(" ");
+        strBuilder.add(w(T-1, minProbaJ) + " ");    
+        
+        for (int i = T-2; i >= 0; i--) {
+        	 N = treillis.get(i).size();
+            for (int j = 0; j < N; j++) {
+            	if(j == minEntry) {
                     System.out.println( "Beta [" + i + "]["+ j +"] " + beta[i][j]);
-                    strBuilder.append(w(i, j)).append(" ");
+                    //strBuilder.append(w(i, j)).append(" ");
+                    strBuilder.add(w(i, j) + " "); 
+                    minEntry = (int) beta[i][j];
                     break;
-                }
+            	}
             }
         }
-
+        Collections.reverse(strBuilder);
         System.out.println("Best Path : \n" + strBuilder.toString());
     }
 
