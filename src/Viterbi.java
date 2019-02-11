@@ -150,9 +150,7 @@ public class Viterbi {
      *  Return : Calcul et renvoie la probabilité d’émission d’avoir le mot W à la position i dans le treillis.
      */
     public double LPE(int W, int index) {
-
         List<Pair<Integer, Double>> words = treillis.get(index);
-
         for (int i = 0; i < words.size(); i++) {
             if (words.get(i).getFirst() == W) {
                 return words.get(i).getSecond();
@@ -165,12 +163,10 @@ public class Viterbi {
      *  Return : Calcul et renvoie la probabilité d’émission d’avoir le mot W à la position i dans le treillis.
      */
     public double LPETranslateTable(int W, int index) {
-
         List<Pair<Integer, Double>> words = translateTable.get(index);
-
-        for (int i = 0; i < words.size(); i++) {
-            if (words.get(i).getFirst() == W) {
-                return words.get(i).getSecond();
+        for(Pair<Integer, Double> items : words){   
+            if (items.getFirst() == W) {
+                return items.getSecond();
             }
         }
         return 0.0;
@@ -202,13 +198,15 @@ public class Viterbi {
         /*
      * calcul argmin
      */
-    public int argminTranslateTable(int i, int j, int N) {
+    public int argminTranslateTable(int i, int j, int N,String [] parts) {
         double min = 100.0, tempMin = 0.0;
         int indexMin = -1;
         System.out.println("N = " + N);
         
         for (int k = 0; k < N; k++) {
-            tempMin = alpha[i - 1][k] + perplexity.logP(wTranslateTable(i - 1, k), wTranslateTable(i, j)) + LPETranslateTable(w(i, j), i);
+            tempMin = alpha[i - 1][k] 
+                    + perplexity.logP(wTranslateTable(Integer.parseInt(parts[i-1]), k), wTranslateTable(Integer.parseInt(parts[i]), j)) 
+                    + LPETranslateTable(wTranslateTable(Integer.parseInt(parts[i]), j), Integer.parseInt(parts[i]));
             System.out.println("Beta [" + i + "]["+ j +"] " + "= " + tempMin);
             //System.out.println("K = " + k + "; i = " + i + "; j = " + j + "; tempMin = " + tempMin);
             
@@ -255,15 +253,20 @@ public class Viterbi {
         }
         
         for (int j = 0; j < N; j++) {
-            alpha[0][j] = LP0(w(0, j)) + LPE(w(0, j), 0);
+            alpha[0][j] = LP0(wTranslateTable(Integer.parseInt(parts[0]), j)) 
+                    + LPETranslateTable(wTranslateTable(Integer.parseInt(parts[0]), j), Integer.parseInt(parts[0]));
             beta[0][j] = -1;
         }
 
         for (int i = 1; i < T; i++) {
             N = translateTable.get(Integer.parseInt(parts[i])).size();
+            alpha[i]=new double[N];
+            beta[i]=new int[N];
             for (int j = 0; j < N; j++) {
-                min = argmin(i, j, translateTable.get(Integer.parseInt(parts[i-1])).size());
-                alpha[i][j] = alpha[i - 1][min] + perplexity.logP(w(i - 1, min), w(i, j)) + LPE(w(i, j), i);
+                min = argminTranslateTable(i, j, translateTable.get(Integer.parseInt(parts[i-1])).size(),parts);
+                alpha[i][j] = alpha[i - 1][min] 
+                        + perplexity.logP(wTranslateTable(Integer.parseInt(parts[i-1]), min), wTranslateTable(Integer.parseInt(parts[i]), j)) 
+                        + LPETranslateTable(wTranslateTable(Integer.parseInt(parts[i]), j), Integer.parseInt(parts[i]));
                 beta[i][j] = min;
             }
         }
@@ -343,5 +346,8 @@ public class Viterbi {
         viterbi.showTranslateTable();
         //viterbi.viterbi();
         //viterbi.showBacktrackPath();
+        
+        viterbi.viterbiTranslateTable("2450 1525 2262 2170");
+        viterbi.showBacktrackPath();
     }
 }
