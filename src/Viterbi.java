@@ -45,16 +45,14 @@ public class Viterbi {
         while (scnr.hasNextLine()) {
             String line = scnr.nextLine();
             String[] parts = line.split(" ", 3);
-            if(translateTable.containsKey(Integer.parseInt(parts[0]))){
-                frenchProba.put(Integer.parseInt(parts[1]), Double.parseDouble(parts[2]));
-            }else{
+            if(!translateTable.containsKey(Integer.parseInt(parts[0]))){
                 if(currentWord != englishWord){
                     translateTable.put(englishWord, frenchProba);
                 }
                 frenchProba = new LinkedHashMap<>();
                 englishWord = Integer.parseInt(parts[0]);
-                frenchProba.put(Integer.parseInt(parts[1]), Double.parseDouble(parts[2]));
             }
+            frenchProba.put(Integer.parseInt(parts[1]), Double.parseDouble(parts[2]));
         }
         if(frenchProba.size() > 0){
             translateTable.put(englishWord, frenchProba);
