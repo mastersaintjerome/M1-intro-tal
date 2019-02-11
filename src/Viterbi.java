@@ -18,7 +18,7 @@ public class Viterbi {
     private List<List<Pair<Integer, Double>>> treillis;
     private Perplexity perplexity = new Perplexity();
     private double[][] alpha;
-    private double[][] beta;
+    private int[][] beta;
 
     public Viterbi(String treillisFileName) {
         this.treillisFileName = treillisFileName;
@@ -152,32 +152,19 @@ public class Viterbi {
         int N = treillis.get(0).size();
 
         alpha = new double[T][N];
-        beta = new double[T][N];
-
-        double minTemp = 100.0;
-        double minCalcul;
-        int betaBestJ = 0;
+        beta = new int[T][N];
         
         for(i = 0; i < T; i++){
-            Arrays.fill(beta[i], -1.0);
+            Arrays.fill(beta[i], -1);
         }
         
         for (j = 0; j < N; j++) {
-            minCalcul =  LP0(w(0, j)) + LPE(w(0, j), 0);
-            if(minTemp > minCalcul){
-                betaBestJ = j;
-                minTemp = minCalcul;
-            }
-            alpha[0][j] = minCalcul;
-            beta[0][j] = -1.0;
+            alpha[0][j] = LP0(w(0, j)) + LPE(w(0, j), 0);
+            beta[0][j] = -1;
         }
-        
-        //beta[0][betaBestJ] = alpha[0][betaBestJ];
 
         for (i = 1; i < T; i++) {
-
             N = treillis.get(i).size();
-
             for (j = 0; j < N; j++) {
                 min = argmin(i, j, treillis.get(i-1).size());
                 alpha[i][j] = alpha[i - 1][min] + perplexity.logP(w(i - 1, min), w(i, j)) + LPE(w(i, j), i);
@@ -192,11 +179,11 @@ public class Viterbi {
         int N = treillis.get(T-1).size();
         //StringBuilder strBuilder = new StringBuilder(50);
         ArrayList<String> strBuilder = new ArrayList<>();
-        int minEntry = (int) beta[T-1][0];
+        int minEntry = beta[T-1][0];
         int minProbaJ = 0;
         for(int j = 1; j < N;j++) {
     		if(alpha[T-1][j] < alpha[T-1][minProbaJ]) {
-    			minEntry = (int) beta[T-1][j];
+    			minEntry = beta[T-1][j];
     			minProbaJ = j;
     		}
         }
@@ -213,7 +200,7 @@ public class Viterbi {
                     System.out.println( "Beta [" + i + "]["+ j +"] " + beta[i][j]);
                     //strBuilder.append(w(i, j)).append(" ");
                     strBuilder.add(w(i, j) + " "); 
-                    minEntry = (int) beta[i][j];
+                    minEntry = beta[i][j];
                     break;
             	}
             }
