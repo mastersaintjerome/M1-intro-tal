@@ -42,7 +42,6 @@ final public class Tokenize {
      * return : le code du mot passé en paramettre.
      */
     public int searchWordCode(String word) {
-    	
         char c = 0;
         boolean needNewChar = true;
         boolean isFind = false;
@@ -52,7 +51,7 @@ final public class Tokenize {
 
         while ( ! isFind || word.length() < 1) {
 
-            if (needNewChar) {
+            if (needNewChar && word.length() != 0) {
                 c = word.charAt(0);
                 needNewChar = false;
             }
@@ -69,7 +68,6 @@ final public class Tokenize {
                     if (word.length() <= 1) {
                         isFind = true;
                         needNewChar = false;
-                        
                     } else {
 
                         word = word.substring(1);
@@ -115,15 +113,14 @@ final public class Tokenize {
      * return : renvoie la ligne à tokeniser traitée, afin de la rendre traitable plus facilement.
      */
     private String prepareTokenizeString(String str) {
-        str = str.replaceAll("[,:;.!?-]", " $0").replace("'", "' ").trim();
+        str = str.replaceAll("[,:;.!?]", " $0").replace("'", "' ").replace(" -", " ").trim();//.replace(" -", " ") dernière modif
         return str;
     }
 
     /*
      * Tokenise une chaine de mot en une chaine d'entiers correspondants.
      */
-    public String tokenizeString(String str) {
-    	
+    public String tokenizeString(String str) {   	
         StringBuilder strTokenized = new StringBuilder(50);
         str = prepareTokenizeString(str);
         String[] parts = str.split(" ");
