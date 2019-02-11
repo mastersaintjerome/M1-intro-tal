@@ -5,7 +5,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -17,14 +20,58 @@ public class Viterbi {
     private final String treillisFileName;//"exemple_treillis.txt"
     private List<List<Pair<Integer, Double>>> treillis;
     private Perplexity perplexity = new Perplexity();
+    private Map<Integer,LinkedHashMap<Integer,Double>> translateTable;
     private double[][] alpha;
     private int[][] beta;
 
     public Viterbi(String treillisFileName) {
         this.treillisFileName = treillisFileName;
+        this.translateTable = new LinkedHashMap<>();
         treillis = new ArrayList<>();
     }
 
+    public void translateTableInitFromFile(String translateTableFileName){	
+        File text = new File(translateTableFileName);
+        Scanner scnr = null;
+        try {
+            scnr = new Scanner(text);
+
+        } catch (FileNotFoundException fi) {
+            fi.printStackTrace();
+        }
+        LinkedHashMap<Integer,Double> frenchProba = null;
+        int englishWord = -1;
+        while (scnr.hasNextLine()) {
+            String line = scnr.nextLine();
+            String[] parts = line.split(" ", 3);
+            if(translateTable.containsKey(Integer.parseInt(parts[0])) && frenchProba != null){
+                frenchProba.put(Integer.parseInt(parts[1]), Double.parseDouble(parts[2]));
+            }else{
+                if(frenchProba != null){
+                    translateTable.put(englishWord, frenchProba);
+                }
+                frenchProba = new LinkedHashMap<>();
+                englishWord = Integer.parseInt(parts[0]);
+            }
+        }
+        if(frenchProba != null){
+            translateTable.put(englishWord, frenchProba);
+        }
+    }
+    
+        /*
+     * Affiche le treillis.
+     */
+    public void showTranslateTable() {
+        for (Map.Entry<Integer,LinkedHashMap<Integer,Double>> entry : translateTable.entrySet()) {
+            for (Map.Entry<Integer,Double> pair : entry.getValue().entrySet()) {
+                Integer key = pair.getKey();
+                Double value = pair.getValue();
+                System.out.println(entry.getKey() + " " +key + " " + value);
+            }
+        }
+    }
+    
     /*
      * Créer un treillis et l'initialise à partir d'un fichier.
      */
@@ -213,8 +260,9 @@ public class Viterbi {
         viterbi.initFromFile();
         //viterbi.showTreillis();
         //viterbi.showBestSentence();
-
-        viterbi.viterbi();
-        viterbi.showBacktrackPath();
+        viterbi.translateTableInitFromFile("../table-traduction-30.txt");
+        viterbi.showTranslateTable();
+        //viterbi.viterbi();
+        //viterbi.showBacktrackPath();
     }
 }
