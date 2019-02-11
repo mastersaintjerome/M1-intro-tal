@@ -336,6 +336,43 @@ public class Viterbi {
         Collections.reverse(strBuilder);
         System.out.println("Best Path : \n" + strBuilder.toString());
     }
+    
+        public void showBacktrackPathTranslateTable(String tokenizeEnglishStr) {
+        // Taille du treillis.
+                // Taille du treillis.
+        String[] parts = tokenizeEnglishStr.split(" ");
+        int T = parts.length;
+        int N = translateTable.get(Integer.parseInt(parts[T-1])).size();
+        ArrayList<String> strBuilder = new ArrayList<>();
+        int minEntry = beta[T-1][0];
+        int minProbaJ = 0;
+        for(int j = 1; j < N;j++) {
+    		if(alpha[T-1][j] < alpha[T-1][minProbaJ]) {
+    			minEntry = beta[T-1][j];
+    			minProbaJ = j;
+    		}
+        }
+        
+        System.out.println( "Beta [" + (T-1) + "]["+ minProbaJ +"] " + beta[T-1][minProbaJ]);
+        
+        //strBuilder.append(w(T-1, minProbaJ)).append(" ");
+        strBuilder.add(wTranslateTable(Integer.parseInt(parts[T-1]), minProbaJ) + " ");    
+        
+        for (int i = T-2; i >= 0; i--) {
+        	 N = translateTable.get(Integer.parseInt(parts[i])).size();
+            for (int j = 0; j < N; j++) {
+            	if(j == minEntry) {
+                    System.out.println( "Beta [" + i + "]["+ j +"] " + beta[i][j]);
+                    //strBuilder.append(w(i, j)).append(" ");
+                    strBuilder.add(wTranslateTable(Integer.parseInt(parts[i]), j) + " "); 
+                    minEntry = beta[i][j];
+                    break;
+            	}
+            }
+        }
+        Collections.reverse(strBuilder);
+        System.out.println("Best Path : \n" + strBuilder.toString());
+    }
 
     public static void main(String[] args) {
         Viterbi viterbi = new Viterbi("../exemple_treillis.txt");
@@ -346,8 +383,8 @@ public class Viterbi {
         viterbi.showTranslateTable();
         //viterbi.viterbi();
         //viterbi.showBacktrackPath();
-        
-        viterbi.viterbiTranslateTable("2450 1525 2262 2170");
-        viterbi.showBacktrackPath();
+        String tokenizeEnglishStr = "2450 1525 2262 2170";
+        viterbi.viterbiTranslateTable(tokenizeEnglishStr);
+        viterbi.showBacktrackPathTranslateTable(tokenizeEnglishStr);
     }
 }
