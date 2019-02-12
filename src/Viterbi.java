@@ -16,16 +16,13 @@ import java.util.Scanner;
  * @author Gaëtan
  */
 public class Viterbi {
-
-    private final String treillisFileName;//"exemple_treillis.txt"
     private List<List<Pair<Integer, Double>>> treillis;
     private Perplexity perplexity = new Perplexity();
     private Map<Integer,List<Pair<Integer, Double>>> translateTable;
     private double[][] alpha;
     private int[][] beta;
 
-    public Viterbi(String treillisFileName) {
-        this.treillisFileName = treillisFileName;
+    public Viterbi() {
         this.translateTable = new LinkedHashMap<>();
         treillis = new ArrayList<>();
     }
@@ -76,7 +73,7 @@ public class Viterbi {
     /*
      * Créer un treillis et l'initialise à partir d'un fichier.
      */
-    public void initFromFile() {
+    public void initFromFile(String treillisFileName) {
     	
         File text = new File(treillisFileName);
         Scanner scnr = null;
@@ -375,16 +372,43 @@ public class Viterbi {
     }
 
     public static void main(String[] args) {
-        Viterbi viterbi = new Viterbi("../exemple_treillis.txt");
-        viterbi.initFromFile();
+        Viterbi viterbi = new Viterbi();
+        
+        if(args.length > 1){
+            if(args[0] == "-vb"){
+                viterbi.initFromFile(args[1]);
+                viterbi.viterbi();
+                viterbi.showBacktrackPath();
+            }else if(args[0] == "-vtt"){
+                viterbi.translateTableInitFromFile(args[1]);//"../table-traduction-30.txt"
+                viterbi.showTranslateTable();
+                String tokenizeEnglishStr;
+                if(args.length > 2)
+                    tokenizeEnglishStr = args[2];
+                else
+                    tokenizeEnglishStr = "2450 1525 2262 2170";
+                viterbi.viterbiTranslateTable(tokenizeEnglishStr);
+                viterbi.showBacktrackPathTranslateTable(tokenizeEnglishStr);
+            }else if(args[0] == "-vt"){
+                viterbi.initFromFile(args[1]);
+                viterbi.showTreillis();
+                viterbi.showBestSentence();
+            }
+        }else{
+            viterbi.initFromFile("../exemple_treillis.txt");
+            viterbi.viterbi();
+            viterbi.showBacktrackPath();
+        }
+        
+        //viterbi.initFromFile("../exemple_treillis.txt");
         //viterbi.showTreillis();
         //viterbi.showBestSentence();
-        viterbi.translateTableInitFromFile("../table-traduction-30.txt");
-        viterbi.showTranslateTable();
+        //viterbi.translateTableInitFromFile("../table-traduction-30.txt");
+        //viterbi.showTranslateTable();
         //viterbi.viterbi();
         //viterbi.showBacktrackPath();
-        String tokenizeEnglishStr = "2450 1525 2262 2170";
-        viterbi.viterbiTranslateTable(tokenizeEnglishStr);
-        viterbi.showBacktrackPathTranslateTable(tokenizeEnglishStr);
+        //String tokenizeEnglishStr = "2450 1525 2262 2170";
+        //viterbi.viterbiTranslateTable(tokenizeEnglishStr);
+        //viterbi.showBacktrackPathTranslateTable(tokenizeEnglishStr);
     }
 }
