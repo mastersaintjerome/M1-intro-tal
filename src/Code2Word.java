@@ -61,7 +61,7 @@ public class Code2Word {
     
     public static void main(String[] args) {
         Code2Word code2Word = new Code2Word();
-        code2Word.read_lexicon("../lexique_ratp_fr.txt");
+        code2Word.read_lexicon("../data_ratp/lexique_ratp_fr.txt");
         String sentence;
         
         if(args.length == 1){

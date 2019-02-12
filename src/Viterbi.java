@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,21 +35,34 @@ public class Viterbi {
         } catch (FileNotFoundException fi) {
             fi.printStackTrace();
         }
+
         List<Pair<Integer, Double>> frenchProba = new ArrayList<>();
+        
+        //init 0
+        int zero = 0;
+        double probaNull = 0.00000001;
+        Pair<Integer, Double> wordInit = new Pair<>(zero, probaNull);
+        frenchProba.add(wordInit);
+        translateTable.put(0, frenchProba);
+        
+        frenchProba = new ArrayList<>();
         int englishWord = -1;
         int currentWord = -1;
         while (scnr.hasNextLine()) {
             String line = scnr.nextLine();
-            String[] parts = line.split(" ", 3);
-            if(!translateTable.containsKey(Integer.parseInt(parts[0]))){
-                if(currentWord != englishWord){
-                    translateTable.put(englishWord, frenchProba);
-                }
-                frenchProba = new ArrayList<>();
-                englishWord = Integer.parseInt(parts[0]);
+            if(! line.isEmpty()) {
+	           String[] parts = line.split(" ", 3);
+	           currentWord = Integer.parseInt(parts[0]);
+	           if(!translateTable.containsKey(Integer.parseInt(parts[0]))){
+	                if(currentWord != englishWord){
+	                    translateTable.put(englishWord, frenchProba);
+	                }
+	                frenchProba = new ArrayList<>();
+	                englishWord = Integer.parseInt(parts[0]);
+	            }
+	            Pair<Integer, Double> word = new Pair<>(Integer.parseInt(parts[1]), Double.parseDouble(parts[2]));
+	            frenchProba.add(word);
             }
-            Pair<Integer, Double> word = new Pair<>(Integer.parseInt(parts[1]), Double.parseDouble(parts[2]));
-            frenchProba.add(word);
         }
         if(frenchProba.size() > 0){
             translateTable.put(englishWord, frenchProba);
@@ -195,25 +207,25 @@ public class Viterbi {
         /*
      * calcul argmin
      */
-    public int argminTranslateTable(int i, int j, int N,String [] parts) {
-        double min = 100.0, tempMin = 0.0;
+    public int argminTranslateTable(int i, int j, int N, String [] parts) {
+        double min = 9999.0, tempMin = 0.0;
         int indexMin = -1;
-        System.out.println("N = " + N);
+        //System.out.println("N = " + N);
         
         for (int k = 0; k < N; k++) {
             tempMin = alpha[i - 1][k] 
                     + perplexity.logP(wTranslateTable(Integer.parseInt(parts[i-1]), k), wTranslateTable(Integer.parseInt(parts[i]), j)) 
                     + LPETranslateTable(wTranslateTable(Integer.parseInt(parts[i]), j), Integer.parseInt(parts[i]));
-            System.out.println("Beta [" + i + "]["+ j +"] " + "= " + tempMin);
+            //System.out.println("Beta [" + i + "]["+ j +"] " + "= " + tempMin);
             //System.out.println("K = " + k + "; i = " + i + "; j = " + j + "; tempMin = " + tempMin);
-            
+            //System.out.println(" viol :" + tempMin);
             if (min > tempMin) {
-                System.out.println(" i = " + i + "; j = " + j + "; K = " + k);
+                //System.out.println(" i = " + i + "; j = " + j + "; K = " + k);
                 indexMin = k;
                 min = tempMin;
             }
         }
-        System.out.println("indexMin = " + indexMin);
+        //System.out.println("indexMin = " + indexMin);
         return indexMin;
     }
 
@@ -228,6 +240,7 @@ public class Viterbi {
      * Return : renvoie le mot situé à la position i, alternative j dans la position.
      */
     public int wTranslateTable(int i, int j) {
+    	//System.out.println("int i :" +i + "int j : " + j + " w : "+ translateTable.get(i).get(j).getFirst());
         return translateTable.get(i).get(j).getFirst();
     }
     
@@ -236,12 +249,13 @@ public class Viterbi {
     */
     public void viterbiTranslateTable(String tokenizeEnglishStr) {
         int min = 0;
-
         // Taille du treillis.
         String[] parts = tokenizeEnglishStr.split(" ");
         int T = parts.length;
-        int N = translateTable.get(Integer.parseInt(parts[0])).size();
-
+        //System.out.println(Integer.parseInt(parts[0]));
+        int word = Integer.parseInt(parts[0]);
+        int N = translateTable.get(word).size();
+        //System.out.println(N + " popo");
         alpha = new double[T][N];
         beta = new int[T][N];
         
@@ -256,16 +270,21 @@ public class Viterbi {
         }
 
         for (int i = 1; i < T; i++) {
-            N = translateTable.get(Integer.parseInt(parts[i])).size();
+        	//System.out.println(Integer.parseInt(parts[i]));
+    		N = translateTable.get(Integer.parseInt(parts[i])).size();
             alpha[i]=new double[N];
             beta[i]=new int[N];
             for (int j = 0; j < N; j++) {
+            	//System.out.println(j + " / " + N);
                 min = argminTranslateTable(i, j, translateTable.get(Integer.parseInt(parts[i-1])).size(),parts);
+                //System.out.println("aie ouille " + min);
                 alpha[i][j] = alpha[i - 1][min] 
                         + perplexity.logP(wTranslateTable(Integer.parseInt(parts[i-1]), min), wTranslateTable(Integer.parseInt(parts[i]), j)) 
                         + LPETranslateTable(wTranslateTable(Integer.parseInt(parts[i]), j), Integer.parseInt(parts[i]));
+                //System.out.println("min = " +min);
                 beta[i][j] = min;
             }
+            //System.out.println("aie");
         }
     }
 
@@ -313,7 +332,7 @@ public class Viterbi {
     		}
         }
         
-        System.out.println( "Beta [" + (T-1) + "]["+ minProbaJ +"] " + beta[T-1][minProbaJ]);
+        //System.out.println( "Beta [" + (T-1) + "]["+ minProbaJ +"] " + beta[T-1][minProbaJ]);
         
         //strBuilder.append(w(T-1, minProbaJ)).append(" ");
         strBuilder.add(w(T-1, minProbaJ) + " ");    
@@ -322,7 +341,7 @@ public class Viterbi {
         	 N = treillis.get(i).size();
             for (int j = 0; j < N; j++) {
             	if(j == minEntry) {
-                    System.out.println( "Beta [" + i + "]["+ j +"] " + beta[i][j]);
+                    //System.out.println( "Beta [" + i + "]["+ j +"] " + beta[i][j]);
                     //strBuilder.append(w(i, j)).append(" ");
                     strBuilder.add(w(i, j) + " "); 
                     minEntry = beta[i][j];
@@ -334,9 +353,8 @@ public class Viterbi {
         System.out.println("Best Path : \n" + strBuilder.toString());
     }
     
-        public void showBacktrackPathTranslateTable(String tokenizeEnglishStr) {
+    public void showBacktrackPathTranslateTable(String tokenizeEnglishStr) {
         // Taille du treillis.
-                // Taille du treillis.
         String[] parts = tokenizeEnglishStr.split(" ");
         int T = parts.length;
         int N = translateTable.get(Integer.parseInt(parts[T-1])).size();
@@ -350,7 +368,7 @@ public class Viterbi {
     		}
         }
         
-        System.out.println( "Beta [" + (T-1) + "]["+ minProbaJ +"] " + beta[T-1][minProbaJ]);
+        //System.out.println( "Beta [" + (T-1) + "]["+ minProbaJ +"] " + beta[T-1][minProbaJ]);
         
         //strBuilder.append(w(T-1, minProbaJ)).append(" ");
         strBuilder.add(wTranslateTable(Integer.parseInt(parts[T-1]), minProbaJ) + " ");    
@@ -359,7 +377,7 @@ public class Viterbi {
         	 N = translateTable.get(Integer.parseInt(parts[i])).size();
             for (int j = 0; j < N; j++) {
             	if(j == minEntry) {
-                    System.out.println( "Beta [" + i + "]["+ j +"] " + beta[i][j]);
+                    //System.out.println( "Beta [" + i + "]["+ j +"] " + beta[i][j]);
                     //strBuilder.append(w(i, j)).append(" ");
                     strBuilder.add(wTranslateTable(Integer.parseInt(parts[i]), j) + " "); 
                     minEntry = beta[i][j];
@@ -368,28 +386,47 @@ public class Viterbi {
             }
         }
         Collections.reverse(strBuilder);
-        System.out.println("Best Path : \n" + strBuilder.toString());
+        System.out.println(String.join(" ", strBuilder));
     }
 
     public static void main(String[] args) {
         Viterbi viterbi = new Viterbi();
         
-        if(args.length > 1){
-            if(args[0] == "-vb"){
+        if(args.length >= 2){
+            if(args[0].equals("-vb")){
                 viterbi.initFromFile(args[1]);
                 viterbi.viterbi();
                 viterbi.showBacktrackPath();
-            }else if(args[0] == "-vtt"){
+            }else if(args[0].equals("-vtt")){
                 viterbi.translateTableInitFromFile(args[1]);//"../table-traduction-30.txt"
-                viterbi.showTranslateTable();
+                //viterbi.showTranslateTable();
                 String tokenizeEnglishStr;
-                if(args.length > 2)
+                File file = null;
+                if(args.length >= 3) {
+                	try {
+                		file = new File(args[2]);
+                		Scanner sc = new Scanner(file);
+                		
+                		while(sc.hasNextLine()) {
+                			
+                			tokenizeEnglishStr = sc.nextLine();
+                			//System.out.println(tokenizeEnglishStr + " " + sc.hasNextLine());
+                			viterbi.viterbiTranslateTable(tokenizeEnglishStr);
+                            viterbi.showBacktrackPathTranslateTable(tokenizeEnglishStr);   
+                		}
+                		
+                		sc.close();
+                	}catch(Exception e) {
+                		
+                	}
+                	
+                }else {
                     tokenizeEnglishStr = args[2];
-                else
-                    tokenizeEnglishStr = "2450 1525 2262 2170";
-                viterbi.viterbiTranslateTable(tokenizeEnglishStr);
-                viterbi.showBacktrackPathTranslateTable(tokenizeEnglishStr);
-            }else if(args[0] == "-vt"){
+                    viterbi.viterbiTranslateTable(tokenizeEnglishStr);
+                    viterbi.showBacktrackPathTranslateTable(tokenizeEnglishStr);   
+                }
+          
+            }else if(args[0].equals("-vt")){
                 viterbi.initFromFile(args[1]);
                 viterbi.showTreillis();
                 viterbi.showBestSentence();

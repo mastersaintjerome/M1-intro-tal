@@ -46,7 +46,7 @@ final public class Tokenize {
         boolean needNewChar = true;
         boolean isFind = false;
         int code = 0;
-
+        //System.out.println(word);
         current = root;
 
         while ( ! isFind || word.length() < 1) {
@@ -98,7 +98,8 @@ final public class Tokenize {
     	String line;
         while(rd.hasEntryNextLine()) {
         	line = rd.readEntry();
-        	System.out.println(tokenizeString(line));
+        	if(! line.isEmpty())
+        		System.out.println(tokenizeString(line));
         }  
     }
 
@@ -113,7 +114,7 @@ final public class Tokenize {
      * return : renvoie la ligne à tokeniser traitée, afin de la rendre traitable plus facilement.
      */
     private String prepareTokenizeString(String str) {
-        str = str.replaceAll("[,:;.!?]", " $0").replace("'", "' ").replace(" -", " ").trim();//.replace(" -", " ") dernière modif
+        str = str.replaceAll("[,:;.!?]", " $0").replaceAll("'", "' ").replaceAll(" -", " ").replaceAll("[\\s][\\s]+", " ").trim();//.replace(" -", " ") dernière modif
         return str;
     }
 
